@@ -75,25 +75,31 @@ export default class Header extends React.Component {
           <div className="uk-container uk-container-small uk-section">
             <div className="uk-text-center uk-text-bold">
               <p className={titleClass}>{this.props.title}</p>
-              <span className="uk-label uk-label-primary uk-text-center uk-margin-small-bottom">
-                {this.props.journal}
-              </span>
+              {this.props.journal && (
+                <span className="uk-label uk-label-primary uk-text-center uk-margin-small-bottom">
+                  {this.props.journal}
+                </span>
+              )}
             </div>
-            <Authors
-              authors={this.props.authors}
-              affiliations={this.props.affiliations}
-              meta={this.props.meta}
-            />
-            <div className="uk-flex uk-flex-center uk-margin-top">
-              {Object.keys(this.props.resources).map((key, rid) => (
-                <ResourceBtn
-                  url={this.props.resources[key]}
-                  title={key}
-                  rid={rid}
-                  key={'header-' + key}
-                />
-              ))}
-            </div>
+            {(this.props.authors || this.props.affiliations) && (
+              <Authors
+                authors={this.props.authors}
+                affiliations={this.props.affiliations}
+                meta={this.props.meta}
+              />
+            )}
+            {this.props.resources && (
+              <div className="uk-flex uk-flex-center uk-margin-top">
+                {Object.keys(this.props.resources).map((key, rid) => (
+                  <ResourceBtn
+                    url={this.props.resources[key]}
+                    title={key}
+                    rid={rid}
+                    key={'header-' + key}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </>

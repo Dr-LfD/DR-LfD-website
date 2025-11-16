@@ -19,21 +19,22 @@ class Template extends React.Component {
     return (
       <div>
         <Helmet
-          title={data.title}
+          title={data.tabTitle || data.title}
           link={[
-            { rel: 'icon', type: 'image/x-icon', href: 'favicon.ico' },
-            {
-              rel: 'icon',
-              type: 'image/png',
-              sizes: '32x32',
-              href: 'favicon-32x32.png',
-            },
-            {
-              rel: 'icon',
-              type: 'image/png',
-              sizes: '16x16',
-              href: 'favicon-16x16.png',
-            },
+            { rel: 'icon', type: 'image/x-icon', href: 'capicon.ico' },
+            // { rel: 'icon', type: 'image/x-icone', href: 'favicon.ico' },
+            // {
+            //   rel: 'icon',
+            //   type: 'image/png',
+            //   sizes: '32x32',
+            //   href: 'favicon-32x32.png',
+            // },
+            // {
+            //   rel: 'icon',
+            //   type: 'image/png',
+            //   sizes: '16x16',
+            //   href: 'favicon-16x16.png',
+            // },
           ]}
           meta={[
             {
@@ -110,12 +111,12 @@ class Template extends React.Component {
         />
         <Header
           title={data.title}
-          journal={data.journal}
-          conference={data.conference}
-          authors={data.authors}
-          affiliations={data.affiliations}
-          meta={data.meta}
-          resources={data.resources}
+          // journal={data.journal}
+          // conference={data.conference}
+          // authors={data.authors}
+          // affiliations={data.affiliations}
+          // meta={data.meta}
+          // resources={data.resources}
           theme={data.theme}
         />
         <div className="uk-container uk-container-small">
@@ -124,13 +125,13 @@ class Template extends React.Component {
             teaser={data.teaser}
             description={data.description}
           />
-          <Video video={data.resources.video} />
+          {/* <Video video={data.resources.video} /> */}
           <SpeakerDeck dataId={data.speakerdeck} />
           <Body body={data.body} />
-          <Citation bibtex={data.bibtex} />
-          <Projects projects={data.projects} />
+          {/* <Citation bibtex={data.bibtex} /> */}
+          {/* <Projects projects={data.projects} /> */}
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     );
   }
