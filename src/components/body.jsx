@@ -66,6 +66,34 @@ export default class Body extends React.Component {
     super(props);
   }
 
+  setVideoPlaybackRates() {
+    // Find all video elements and set their playback rate based on data attribute
+    const videos = document.querySelectorAll('video[data-playback-rate]');
+    videos.forEach((video) => {
+      const playbackRate = parseFloat(video.getAttribute('data-playback-rate'));
+      if (!isNaN(playbackRate) && playbackRate > 0) {
+        video.playbackRate = playbackRate;
+        // Also set it when the video starts playing (for autoplay videos)
+        video.addEventListener('loadedmetadata', () => {
+          video.playbackRate = playbackRate;
+        });
+        video.addEventListener('play', () => {
+          video.playbackRate = playbackRate;
+        });
+      }
+    });
+  }
+
+  componentDidMount() {
+    // Set playback rates after initial render
+    setTimeout(() => this.setVideoPlaybackRates(), 100);
+  }
+
+  componentDidUpdate() {
+    // Set playback rates after content updates
+    setTimeout(() => this.setVideoPlaybackRates(), 100);
+  }
+
   render() {
     return this.props.body ? (
       <div className="uk-section">
