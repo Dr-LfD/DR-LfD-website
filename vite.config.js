@@ -12,6 +12,7 @@ export default defineConfig({
     },
   },
   plugins: [react(), yaml()],
+  assetsInclude: ['**/*.avi'],
   build: {
     outDir: 'build',
     rollupOptions: {
