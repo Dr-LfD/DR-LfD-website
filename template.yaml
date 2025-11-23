@@ -102,8 +102,9 @@ body:
               src="aloha2-vid/unreach1.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               />
           </div>
           <div>
@@ -111,8 +112,9 @@ body:
               src="aloha2-vid/unreach2.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               />
           </div>
           <div>
@@ -120,8 +122,9 @@ body:
               src="aloha2-vid/unreach3.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               />
           </div>
         </div>
@@ -171,8 +174,9 @@ body:
               src="aloha2-vid/unsafe1.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="4"
               />
           </div>
@@ -181,8 +185,9 @@ body:
               src="aloha2-vid/unsafe2.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="4"
               />
           </div>
@@ -191,8 +196,9 @@ body:
               src="aloha2-vid/unsafe3.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="4"
               />
           </div>
@@ -201,8 +207,9 @@ body:
               src="aloha2-vid/unsafe4.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="4"
               />
           </div>
@@ -223,8 +230,9 @@ body:
               src="tape_leaky/tape1.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="4"
               />
           </div>
@@ -233,8 +241,9 @@ body:
               src="tape_leaky/tape2.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="4"
               />
           </div>
@@ -243,8 +252,9 @@ body:
               src="tape_leaky/tape3.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="4"
               />
           </div>
@@ -253,8 +263,9 @@ body:
               src="tape_leaky/tape4.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="4"
               />
           </div>
@@ -273,8 +284,9 @@ body:
               src="screw_leaky/screw_1.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="4"
               />
           </div>
@@ -283,8 +295,9 @@ body:
               src="screw_leaky/screw_2.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="4"
               />
           </div>
@@ -293,8 +306,9 @@ body:
               src="screw_leaky/screw_3.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="4"
               />
           </div>
@@ -303,8 +317,9 @@ body:
               src="screw_leaky/screw_4.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="4"
               />
           </div>
@@ -322,8 +337,9 @@ body:
               src="franka_screw/screw1.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="4"
               />
           </div>
@@ -332,8 +348,9 @@ body:
               src="franka_screw/screw2.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="4"
               />
           </div>
@@ -342,8 +359,9 @@ body:
               src="franka_screw/screw3.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="4"
               />
           </div>
@@ -352,8 +370,9 @@ body:
               src="franka_screw/screw4.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="4"
               />
           </div>
@@ -362,8 +381,9 @@ body:
               src="franka_screw/screw5.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="4"
               />
           </div>
@@ -398,8 +418,9 @@ body:
               src="aloha2-vid/3skills-web1.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="1"
               />
           </div>
@@ -408,8 +429,9 @@ body:
               src="aloha2-vid/3skills-web2.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="1"
               />
           </div>
@@ -418,8 +440,9 @@ body:
               src="aloha2-vid/3skills-web3.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="1"
               />
           </div>
@@ -428,8 +451,9 @@ body:
               src="aloha2-vid/3skills-web4.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="1"
               />
           </div>
@@ -438,8 +462,9 @@ body:
               src="aloha2-vid/3skills-web5.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="1"
               />
           </div>
@@ -448,8 +473,9 @@ body:
               src="aloha2-vid/3skills-web6.mp4"
               loop
               muted
-              preload="none"
-              uk-video="autoplay:inview"
+              preload="metadata"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
               data-playback-rate="1"
               />
           </div>

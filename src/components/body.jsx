@@ -84,14 +84,68 @@ export default class Body extends React.Component {
     });
   }
 
+  setupVideoResetOnSlide() {
+    // Find all videos in sliders and reset them when they go out of view
+    const videos = document.querySelectorAll('div[uk-slider] video');
+
+    if (videos.length === 0) return;
+
+    // Use Intersection Observer to detect when videos go out of view
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target;
+          if (!entry.isIntersecting) {
+            // Video is out of view - pause and reset
+            if (!video.paused) {
+              video.pause();
+            }
+            video.currentTime = 0;
+          }
+        });
+      },
+      {
+        threshold: 0.1, // Trigger when less than 10% visible
+        rootMargin: '0px',
+      }
+    );
+
+    videos.forEach((video) => {
+      observer.observe(video);
+    });
+
+    // Also listen to UIKit slider events as a fallback
+    const sliders = document.querySelectorAll('div[uk-slider]');
+    sliders.forEach((slider) => {
+      // Listen for slider item changes
+      slider.addEventListener('itemshown', (e) => {
+        // Reset all videos in this slider that are not the shown one
+        const allVideos = slider.querySelectorAll('video');
+        const shownItem = e.detail[0];
+        allVideos.forEach((video) => {
+          if (!shownItem.contains(video) && !video.paused) {
+            video.pause();
+            video.currentTime = 0;
+          }
+        });
+      });
+    });
+  }
+
   componentDidMount() {
     // Set playback rates after initial render
-    setTimeout(() => this.setVideoPlaybackRates(), 100);
+    setTimeout(() => {
+      this.setVideoPlaybackRates();
+      this.setupVideoResetOnSlide();
+    }, 100);
   }
 
   componentDidUpdate() {
     // Set playback rates after content updates
-    setTimeout(() => this.setVideoPlaybackRates(), 100);
+    setTimeout(() => {
+      this.setVideoPlaybackRates();
+      this.setupVideoResetOnSlide();
+    }, 100);
   }
 
   render() {
