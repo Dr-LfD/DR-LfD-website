@@ -396,7 +396,14 @@ body:
 
       <div class="uk-grid-small uk-child-width-1-1@s uk-child-width-1-2@m" uk-grid>
         <div>
-          <img src="ppt-pics/throw_screw_web.gif">
+          <video
+            src="ppt-pics/throw_screw_web.mp4"
+            loop
+            muted
+            preload="metadata"
+            onclick="this.paused ? this.play() : this.pause()"
+            style="cursor: pointer"
+            />
         </div>
         <div>
           <h3>Randomization via Tossing</h3>
@@ -405,9 +412,17 @@ body:
       </div>
 
       <div class="uk-grid-small uk-child-width-1-1@s" uk-grid>
-        <div class="uk-width-1-1@m">
-          <img src="ppt-pics/3skills_web.gif">
+        <div>
+          <video
+            src="ppt-pics/3skills_web.mp4"
+            loop
+            muted
+            preload="metadata"
+            onclick="this.paused ? this.play() : this.pause()"
+            style="cursor: pointer"
+            />
         </div>
+
       </div>
 
       Experiments (1X) under different initial object placements.
@@ -489,7 +504,14 @@ body:
 
       <div class="uk-grid-small uk-child-width-1-1@s" uk-grid>
         <div class="uk-width-1-1@m">
-          <img src="ppt-pics/3tape_web.gif">
+          <video
+            src="ppt-pics/3tape_web.mp4"
+            loop
+            muted
+            preload="metadata"
+            onclick="this.paused ? this.play() : this.pause()"
+            style="cursor: pointer"
+            />
         </div>
       </div>
 
