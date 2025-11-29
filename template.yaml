@@ -5,13 +5,13 @@ title: 'Decompose and Reorganize: Planning with  Primitives and Visuomotor Polic
 tabTitle: 'DR-LfD' # Short title for browser tab
 # journal: "AAAA'24"
 resources:
-  paper: https://openreview.net/
-  arxiv: https://arxiv.org
-  code: https://github.com/denkiwakame/academic-project-template
-  video: https://www.youtube.com/embed/onbnb_D1wC8?si=xJczUv716Lt5aO4l&amp;start=1150
+  paper: https://drive.google.com/file/d/1muwAEqx4Hwyhklveuhy28bI8Hk7Vxnez/view?usp=sharing
+  # arxiv: https://arxiv.org
+  # code: https://github.com/denkiwakame/academic-project-template
+  video: 'ppt-pics/sup-vid.mp4'
 #   demo: https://colab.research.google.com/
 #   huggingface: https://huggingface.co/
-# description: academic projectpage template that supports markdown and KaTeX
+description: web page that contains supplementary materials for DR-LfD
 
 image: https://denkiwakame.github.io/academic-project-template/teaser.jpg
 url: https://denkiwakame.github.io/academic-project-template
@@ -26,27 +26,23 @@ affiliations:
 
 teaser: paper-figures/tro-teaser.png
 abstract: |
-  Imitation learning (IL), particularly when leveraging high-dimensional visual inputs for policy training, has proven intuitive and effective in complex bimanual manipulation tasks. Nonetheless, the generalization capability of visuomotor policies remains limited, especially when only limited amounts of demonstrations are available. 
-  Furthermore, accumulated errors in visuomotor policies significantly hinder their ability to complete long-horizon tasks. To address these limitations, we propose *DR-LfD* (<u>D</u>ecomposed and <u>R</u>eorganized Skills <u>L</u>earned <u>f</u>rom <u>D</u>emonstrations), a framework that seamlessly integrates visuomotor policies into task and motion planning (TAMP). Adopting a scene-graph-like representation, DR-LfD partitions human demonstrations into symbolic subgoals with the help of a vision-language model (VLM). Continuous decision variables from the key scene graph are employed to train object-centric motion primitives, whose equivariant network structure enables reliable performance even when encountering out-of-distribution observations.
-  With a handful of demonstrations, DR-LfD enables visuomotor policies to generalize across out-of-distribution initial conditions without data-hungry pre-training and per-object 6DoF pose estimation.
-  By leveraging TAMP formulation, DR-LfD can achieve a combinatorial number of goals while the number of demonstrations is linear to skill types.
-  In four real-world experiments featuring two distinct dual-arm manipulator systems, DR-LfD outperforms state-of-the-art generative IL methods, indicating wider applicability for more complex tasks.
+  Successfully automating dexterous, long-horizon robotic manipulation requires frameworks capable of both high-level reasoning and fine-grained execution.  Traditional task and motion planning (TAMP), while excellent in symbolic planning, is often brittle in contact-rich operations. Simultaneously, imitation learning (IL), while effective in manipulation tasks with visual feedback, is limited by its low capability in spatial generalization and multi-stage operation.   To reconcile their complementary strengths and limitations, we propose *DR-LfD* (<u>D</u>ecomposed and <u>R</u>eorganized Skills <u>L</u>earned <u>f</u>rom <u>D</u>emonstrations), a framework that seamlessly integrates visuomotor policies into a TAMP-gated decision-making system.  According to contact relationships, DR-LfD  decomposes human demonstrations into atomic skills, which are reproduced as visuomotor policies or object-centric primitives. Specifically, object-centric primitives leverage object-level equivariance to generalize under out-of-distribution observations. The initiation, termination, and constraints of the visuomotor policies are carefully modeled and implemented in a TAMP-compatible form, enabling reorganization of skills learned from different sources.  DR-LfD transforms the learning problem from one requiring exponential data to one that scales linearly with the number of distinct skill types, with limited demonstration data for each skill.  Through comprehensive real-world and simulation benchmarking across diverse scenarios, we demonstrate the strong performance of DR-LfD on tasks involving multiple steps, unseen setups, and physical constraints.
 body:
-  - title: 'Overview'
-    text: |
-      <div class="uk-grid-small uk-child-width-1-1@s" uk-grid>
-        <div>
-          <video
-            src="ppt-pics/sup-vid.mp4"
-            loop
-            muted
-            preload="metadata"
-            onclick="this.paused ? this.play() : this.pause()"
-            style="cursor: pointer"
-            controls
-            />
-        </div>
-      </div>
+  # - title: 'Overview'
+  #   text: |
+  #     <div class="uk-grid-small uk-child-width-1-1@s" uk-grid>
+  #       <div>
+  #         <video
+  #           src="ppt-pics/sup-vid.mp4"
+  #           loop
+  #           muted
+  #           preload="metadata"
+  #           onclick="this.paused ? this.play() : this.pause()"
+  #           style="cursor: pointer"
+  #           controls
+  #           />
+  #       </div>
+  #     </div>
 
   - title: 'Regrasping and Relocation under Physical Constraints'
     text: |
