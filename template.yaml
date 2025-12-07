@@ -26,7 +26,7 @@ affiliations:
 
 teaser: paper-figures/tro-teaser.png
 abstract: |
-  Successfully automating dexterous, long-horizon robotic manipulation requires frameworks capable of both high-level reasoning and fine-grained execution.  Traditional task and motion planning (TAMP), while excellent in symbolic planning, is often brittle in contact-rich operations. Simultaneously, imitation learning (IL), while effective in manipulation tasks with visual feedback, is limited by its low capability in spatial generalization and multi-stage operation.   To reconcile their complementary strengths and limitations, we propose *DR-LfD* (<u>D</u>ecomposed and <u>R</u>eorganized Skills <u>L</u>earned <u>f</u>rom <u>D</u>emonstrations), a framework that seamlessly integrates visuomotor policies into a TAMP-gated decision-making system.  According to contact relationships, DR-LfD  decomposes human demonstrations into atomic skills, which are reproduced as visuomotor policies or object-centric primitives. Specifically, object-centric primitives leverage object-level equivariance to generalize under out-of-distribution observations. The initiation, termination, and constraints of the visuomotor policies are carefully modeled and implemented in a TAMP-compatible form, enabling reorganization of skills learned from different sources.  DR-LfD transforms the learning problem from one requiring exponential data to one that scales linearly with the number of distinct skill types, with limited demonstration data for each skill.  Through comprehensive real-world and simulation benchmarking across diverse scenarios, we demonstrate the strong performance of DR-LfD on tasks involving multiple steps, unseen setups, and physical constraints.
+  Successfully automating dexterous, long-horizon robotic manipulation requires frameworks capable of both high-level reasoning and fine-grained execution.  Traditional task and motion planning (TAMP), while excellent in symbolic planning, is often brittle in contact-rich operations. Simultaneously, imitation learning (IL), while effective in manipulation tasks with visual feedback, is limited by its low capability in spatial generalization and multi-stage operation.   To reconcile their complementary strengths and limitations, we propose *DR-LfD* (<u>D</u>ecomposed and <u>R</u>eorganized Skills <u>L</u>earned <u>f</u>rom <u>D</u>emonstrations), a framework that seamlessly integrates visuomotor policies into a TAMP-gated decision-making system.  According to contact relationships, DR-LfD  decomposes human demonstrations into atomic skills, which are reproduced as visuomotor policies or object-centric primitives. The initiation, termination, and constraints of the visuomotor policies are carefully modeled and implemented in a TAMP-compatible form, enabling reorganization of skills learned from different sources.  DR-LfD transforms the learning problem from one requiring exponential data to one that scales linearly with the number of distinct skill types, with limited demonstration data for each skill.  Through comprehensive real-world and simulation benchmarking across diverse scenarios, we demonstrate the strong performance of DR-LfD on tasks involving multiple steps, unseen setups, and physical constraints.
 body:
   # - title: 'Overview'
   #   text: |
@@ -50,7 +50,7 @@ body:
 
       ### *Unreachable* Setup
 
-      **Real-world Experiments**(4x): When the reachability constraint is violated for one arm, DR-LfD can plan to use the other arm to transport the object to a commonly-reachable position.
+      (4x) When the reachability constraint is violated for one arm, DR-LfD plans to use the other arm to transport the object to a commonly-reachable position.
       <div uk-slider>
         <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-2@m uk-grid">
           <div>
@@ -97,7 +97,7 @@ body:
       ### *Unsafe* Setup
 
 
-      **Real-world Experiments**(4x): When there is a plunger obstacle blocks the space, DR-LfD can plan the obstacle-removal actions before doing the manipulation.
+      (4x) When a plunger obstacle blocks the required space, DR-LfD plans obstacle-removal actions before performing the manipulation.
       <div uk-slider>
         <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-3@m uk-grid">
           <div>
@@ -472,6 +472,72 @@ body:
           <a class="uk-icon-button uk-margin-small-left" href uk-slidenav-next uk-slider-item="next"></a>
         </div>
       </div>
+
+  # - title: 'Simulation videos' (mp4 fail to load)
+  #   text: |
+  #     <div uk-slider>
+  #       <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-3@m uk-grid">
+  #         <div>
+  #           <video
+  #             src="aloha2-vid/3skills-web6.mp4"
+  #             loop
+  #             muted
+  #             controls
+  #             preload="metadata"
+  #             onclick="this.paused ? this.play() : this.pause()"
+  #             style="cursor: pointer"
+  #             />
+  #         </div>
+  #         <div>
+  #           <video
+  #             src="aloha2-vid/obj1.mp4"
+  #             loop
+  #             muted
+  #             controls
+  #             preload="metadata"
+  #             onclick="this.paused ? this.play() : this.pause()"
+  #             style="cursor: pointer"
+  #             />
+  #         </div>
+  #         <div>
+  #           <video
+  #             src="libero_dmg/living_retry.mp4"
+  #             loop
+  #             muted
+  #             controls
+  #             preload="metadata"
+  #             onclick="this.paused ? this.play() : this.pause()"
+  #             style="cursor: pointer"
+  #             />
+  #         </div>
+  #         <div>
+  #           <video
+  #             src="libero_dmg/kitchen_compressed.mp4"
+  #             loop
+  #             muted
+  #             controls
+  #             preload="metadata"
+  #             onclick="this.paused ? this.play() : this.pause()"
+  #             style="cursor: pointer"
+  #             />
+  #         </div>
+  #         <div>
+  #           <video
+  #             src="libero_dmg/study_compressed.mp4"
+  #             loop
+  #             muted
+  #             controls
+  #             preload="metadata"
+  #             onclick="this.paused ? this.play() : this.pause()"
+  #             style="cursor: pointer"
+  #             />
+  #         </div>
+  #       </div>
+  #       <div class="uk-flex uk-flex-center uk-margin-small">
+  #         <a class="uk-icon-button" href uk-slidenav-previous uk-slider-item="previous"></a>
+  #         <a class="uk-icon-button uk-margin-small-left" href uk-slidenav-next uk-slider-item="next"></a>
+  #       </div>
+  #     </div>
 
 projects: # relevant projects
   - title: Relevant Project I
