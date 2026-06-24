@@ -42,16 +42,22 @@ class ResourceBtn extends React.Component {
   }
   render() {
     if (!this.props.url) return null;
-    const aClass = `uk-button uk-padding-remove ${this.props.rid === 0 ? 'uk-first-column' : 'uk-margin-medium-left@s uk-margin-small-left'}`;
+    const comingSoon = this.props.url === 'coming-soon';
+    const aClass = `uk-button uk-padding-remove ${this.props.rid === 0 ? 'uk-first-column' : 'uk-margin-medium-left@s uk-margin-small-left'}${comingSoon ? ' uk-disabled uk-text-muted' : ''}`;
     const sClass = 'uk-margin-small-left uk-margin-small-right uk-text-bold';
     const FaIcon = this.icons[this.props.title];
-    const iTitle =
-      this.props.title == 'huggingface' && this.state.isMobile
+    const iTitle = comingSoon
+      ? `${this.props.title} (coming soon)`
+      : this.props.title == 'huggingface' && this.state.isMobile
         ? ' hf '
         : this.props.title;
     return (
       <>
-        <a className={aClass} href={this.props.url} target="_blank">
+        <a
+          className={aClass}
+          href={comingSoon ? undefined : this.props.url}
+          target={comingSoon ? undefined : '_blank'}
+        >
           <FaIcon size="2em" />
           <span className={sClass}>{iTitle}</span>
         </a>
