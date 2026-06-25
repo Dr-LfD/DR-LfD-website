@@ -7,7 +7,7 @@ tabTitle: 'DR-LfD' # Short title for browser tab
 resources:
   paper: https://drive.google.com/file/d/1-yavKtN-idZwg_rXV0DjbP3J6rRkgvOh/view?usp=sharing
   # arxiv: https://arxiv.org
-  code: coming-soon
+  code: https://github.com/Dr-LfD/Dr-LfD-dualArm
   video: 'ppt-pics/sup-vid.mp4'
 #   demo: https://colab.research.google.com/
 #   huggingface: https://huggingface.co/
