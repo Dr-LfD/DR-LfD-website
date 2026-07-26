@@ -8,34 +8,31 @@ export default class Video extends React.Component {
 
   render() {
     if (!this.props.video) return null;
-    const wrapperClass = {
-      overflow: 'hidden',
-      paddingBottom: '56.25%',
-      position: 'relative',
-      height: 0,
-    };
-    const innerClass = {
-      left: 0,
-      top: 0,
-      height: '100%',
-      width: '100%',
-      position: 'absolute',
-    };
+    const poster = 'posters/' + this.props.video.replace(/\.mp4$/, '.jpg');
     return (
       <div className="uk-section">
         <h2 className="uk-text-bold uk-heading-line uk-text-center" id="video">
-          <span>Video</span>
+          <span>Supplementary Video</span>
         </h2>
-        <div style={wrapperClass}>
-          <iframe
-            style={innerClass}
-            className="uk-align-center uk-width-1-1"
-            src={this.props.video}
-            frameBorder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-        </div>
+        <video
+          className="uk-align-center uk-width-1-1"
+          data-src={this.props.video}
+          poster={poster}
+          preload="none"
+          controls
+          controlsList="nodownload"
+          muted
+          playsInline
+          style={{ cursor: 'pointer', display: 'block' }}
+          onClick={(e) => {
+            const v = e.currentTarget;
+            if (v.dataset.src) {
+              v.src = v.dataset.src;
+              v.removeAttribute('data-src');
+            }
+            v.paused ? v.play() : v.pause();
+          }}
+        />
       </div>
     );
   }

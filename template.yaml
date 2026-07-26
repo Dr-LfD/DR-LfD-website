@@ -3,14 +3,12 @@ theme: default # default || classic || dark
 # twitter: '@denkivvakame'
 title: 'Decompose and Reorganize: Planning with  Primitives and Visuomotor Policies Learned from Demonstrations'
 tabTitle: 'DR-LfD' # Short title for browser tab
-# journal: "AAAA'24"
+journal: 'In revision, IEEE T-RO'
 resources:
   paper: https://drive.google.com/file/d/1nnW882ct4Hky8AVqaqiqV_urIbZgC_WV/view?usp=sharing
   # arxiv: https://arxiv.org
   code: https://github.com/Dr-LfD/Dr-LfD-dualArm
   video: 'ppt-pics/sup-vid.mp4'
-#   demo: https://colab.research.google.com/
-#   huggingface: https://huggingface.co/
 description: web page that contains supplementary materials for DR-LfD
 
 image: https://denkiwakame.github.io/academic-project-template/teaser.jpg
@@ -28,63 +26,128 @@ teaser: paper-figures/tro-teaser.png
 abstract: |
   Successfully automating dexterous, long-horizon robotic manipulation requires frameworks capable of both high-level reasoning and fine-grained execution.  Traditional task and motion planning (TAMP), while excellent in symbolic planning, is often brittle in contact-rich operations. Simultaneously, imitation learning (IL), while effective in manipulation tasks with visual feedback, is limited by its low capability in spatial generalization and multi-stage operation.   To reconcile their complementary strengths and limitations, we propose *DR-LfD* (<u>D</u>ecomposed and <u>R</u>eorganized Skills <u>L</u>earned <u>f</u>rom <u>D</u>emonstrations), a framework that seamlessly integrates visuomotor policies into a TAMP-gated decision-making system.  According to contact relationships, DR-LfD  decomposes human demonstrations into atomic skills, which are reproduced as visuomotor policies or object-centric primitives. The initiation, termination, and constraints of the visuomotor policies are carefully modeled and implemented in a TAMP-compatible form, enabling reorganization of skills learned from different sources.  DR-LfD transforms the learning problem from one requiring exponential data to one that scales linearly with the number of distinct skill types, with limited demonstration data for each skill.  Through comprehensive real-world and simulation benchmarking across diverse scenarios, we demonstrate the strong performance of DR-LfD on tasks involving multiple steps, unseen setups, and physical constraints.
 body:
-  # - title: 'Overview'
-  #   text: |
-  #     <div class="uk-grid-small uk-child-width-1-1@s" uk-grid>
-  #       <div>
-  #         <video
-  #           src="ppt-pics/sup-vid.mp4"
-  #           loop
-  #           muted
-  #           preload="metadata"
-  #           onclick="this.paused ? this.play() : this.pause()"
-  #           style="cursor: pointer"
-  #           controls
-  #           />
-  #       </div>
-  #     </div>
-
-  - title: 'Regrasping and Relocation under Physical Constraints'
+  - title: 'Key Contributions'
     text: |
+      > **Core idea:** We learn individual manipulation skills from a small number of demonstrations and reorganize them using a TAMP solver to achieve combinatorial goals.
 
+      - **TAMP-gated system** — We devise a novel TAMP-gated system that abstracts atomic skills from demonstrations and reorganizes them to achieve combinatorial goals.
+      - **Object-centric primitives** — We leverage equivariant diffusion models to train object-centric primitives, enabling robust spatial generalization from minimal data.
+      - **TAMP-compatible visuomotor policies** — We systematically model the initiation, termination, and constraints of learned visuomotor policies in a form compatible with a sampling-based TAMP framework.
+      - **Comprehensive evaluation** — We demonstrate through comprehensive real-world and simulated experiments that DR-LfD completes long-horizon manipulation tasks under challenging conditions while complying with physical constraints, significantly outperforming state-of-the-art imitation learning methods.
+
+  - title: 'How It Works'
+    text: |
+      ### Pipeline
+
+      <div class="method-pipeline" aria-label="DR-LfD method pipeline">
+        <div><strong>1</strong><span>Demonstrate</span></div>
+        <div><strong>2</strong><span>Decompose<br>by contact</span></div>
+        <div><strong>3</strong><span>Learn skill<br>repertoire</span></div>
+        <div><strong>4</strong><span>Plan with<br>TAMP</span></div>
+        <div><strong>5</strong><span>Execute &amp;<br>verify</span></div>
+      </div>
+
+      1. **Demonstrate** — Record about 20 teleoperated examples of each short skill. Full task sequences are not required.
+      2. **Decompose** — A VLM finds changes in robot–object and object–object contact. Each segment becomes an atomic skill with clear start and end conditions.
+
+
+      <img src="paper-figures/vlm-grounding.png" alt="VLM-based contact relationship grounding for demonstration decomposition" loading="lazy" style="max-width:70%;" />
+
+      3. **Learn each skill** — Train object-centric primitives for pick-and-place actions and visuomotor policies for contact-rich actions. Use standard TAMP motion skills for free-space moves.
+
+
+      <img src="paper-figures/skillequivNet.png" alt="SO(3)-equivariant object-centric skill network" loading="lazy" />
+
+      4. **Plan a new task** — The task-and-motion planner (TAMP) selects and orders the learned skills. Safety and reachability constraints let it add regrasping or obstacle-removal steps when needed.
+      5. **Execute and verify** — The robot perceives, plans, acts, and checks the result of each step. It replans locally if a step fails.
+
+      ### System Advantages
+
+      <div class="system-advantages" aria-label="DR-LfD system advantages">
+        <article class="uk-card uk-card-default uk-card-body system-advantage">
+          <h4>Heterogeneous Skill Composition</h4>
+          <p>The planner temporally composes visuomotor policies, object-centric primitives, and predefined motion skills. Contact conditions make each skill transition explicit and interpretable.</p>
+        </article>
+        <article class="uk-card uk-card-default uk-card-body system-advantage">
+          <h4>Pose-Free Spatial Generalization</h4>
+          <p>Object-centric primitives use SE(3)-equivariant learning to adapt to new object placements and orientations without explicit 6-DoF object-pose estimation.</p>
+        </article>
+        <article class="uk-card uk-card-default uk-card-body system-advantage">
+          <h4>Feasibility-Aware Visuomotor Policies</h4>
+          <p>Unlike prior visuomotor policies, DR-LfD exposes policy safety and reachability constraints to the planner. It can test whether a policy is feasible and insert corrective steps when needed.</p>
+        </article>
+        <article class="uk-card uk-card-default uk-card-body system-advantage">
+          <h4>Dual-Arm Online Replanning</h4>
+          <p>The system tracks dual-arm contact progress, re-perceives and verifies each skill outcome, and locally replans when the observed state differs from the expected state.</p>
+        </article>
+      </div>
+
+  - title: 'Results'
+    text: |
+      #### Spatial Generalization — Real World (n = 20 per setup)
+
+      Three tasks on ALOHA hardware. **ID**: in-distribution placements. **OOD**: position/rotation shift. **Leaky**: target object rotated and leaning against a distractor.
+
+      | Task | Setup | DP | π₀.₅ | **DR-LfD** |
+      |---|---|---|---|---|
+      | Object Handoff | ID | 90% | 100% | **100%** |
+      | | OOD | 30% | 20% | **95%** |
+      | | Leaky | 60% | 90% | **100%** |
+      | Screwdriver Packing | ID | 55% | 60% | **80%** |
+      | | OOD | 10% | 10% | **80%** |
+      | | Leaky | 0% | **75%** | 65% |
+      | Cup-sleeve Insertion | ID | 75% | **85%** | 80% |
+      | | OOD | 35% | 25% | **75%** |
+      | | Leaky | 35% | 35% | **40%** |
+
+      DR-LfD consistently dominates under OOD placement shifts, including outperforming the large pretrained π₀.₅ model. Under the Leaky condition, Screwdriver Packing shows π₀.₅ ahead (75% vs 65%), and Cup-sleeve Leaky is low for all methods — a conjunctive effect of fine-grained insertion requirements and noisy single-view depth sensing.
+
+  - title: 'Constraint Handling: Reachability & Safety'
+    text: |
+      When physical constraints are violated, pure imitation learning baselines (ACT, DP) **score 0%** — they have no mechanism to adapt. DR-LfD uses reachability maps and Minimum-Distance-Field safety checks as TAMP-compatible predicates, enabling automatic insertion of corrective actions into the plan.
+
+      <img src="paper-figures/tro-unsafe-unreachable.png" alt="Examples of unreachable and unsafe setups handled through planning" loading="lazy" />
 
       ### *Unreachable* Setup
 
-      (4x) When the reachability constraint is violated for one arm, DR-LfD plans to use the other arm to transport the object to a commonly-reachable position.
+      When the object falls outside one arm's reachability map, DR-LfD plans to use the other arm to transport it to a commonly-reachable position before performing insertion.
       <div uk-slider>
         <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-2@m uk-grid">
           <div>
             <video
-              src="aloha2-vid/unreach1.mp4"
+              data-src="aloha2-vid/unreach1.mp4"
+              poster="posters/aloha2-vid/unreach1.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
               />
           </div>
           <div>
             <video
-              src="aloha2-vid/unreach2.mp4"
+              data-src="aloha2-vid/unreach2.mp4"
+              poster="posters/aloha2-vid/unreach2.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
               />
           </div>
           <div>
             <video
-              src="aloha2-vid/unreach3.mp4"
+              data-src="aloha2-vid/unreach3.mp4"
+              poster="posters/aloha2-vid/unreach3.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
               />
@@ -95,64 +158,62 @@ body:
           <a class="uk-icon-button uk-margin-small-left" href uk-slidenav-next uk-slider-item="next"></a>
         </div>
       </div>
-
 
       ### *Unsafe* Setup
 
-
-      (4x) When a plunger obstacle blocks the required space, DR-LfD plans obstacle-removal actions before performing the manipulation.
+      When a pole obstacle blocks the required workspace, DR-LfD plans obstacle-removal actions (relocate the pole to a safe pose) before performing bimanual insertion.
       <div uk-slider>
         <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-3@m uk-grid">
           <div>
             <video
-              src="aloha2-vid/unsafe1.mp4"
+              data-src="aloha2-vid/unsafe1.mp4"
+              poster="posters/aloha2-vid/unsafe1.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="4"
               />
           </div>
           <div>
             <video
-              src="aloha2-vid/unsafe2.mp4"
+              data-src="aloha2-vid/unsafe2.mp4"
+              poster="posters/aloha2-vid/unsafe2.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="4"
               />
           </div>
           <div>
             <video
-              src="aloha2-vid/unsafe3.mp4"
+              data-src="aloha2-vid/unsafe3.mp4"
+              poster="posters/aloha2-vid/unsafe3.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="4"
               />
           </div>
           <div>
             <video
-              src="aloha2-vid/unsafe4.mp4"
+              data-src="aloha2-vid/unsafe4.mp4"
+              poster="posters/aloha2-vid/unsafe4.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="4"
               />
           </div>
         </div>
@@ -162,61 +223,63 @@ body:
         </div>
       </div>
 
-  - title: 'Overcoming unseen, random setups'
+  - title: 'Spatial Generalization: Unseen Setups'
     text: |
-      (4x) Handing off an object from right to left
+      DR-LfD uses SO(3)-equivariant diffusion primitives trained on ≈20 demonstrations to generalize to novel object positions and orientations at test time.
+
+      **Object Handoff** — transferring a tape roll from right arm to left arm across varied initial placements (OOD condition, 4× speed).
       <div uk-slider>
         <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-3@m uk-grid">
           <div>
             <video
-              src="tape_leaky/tape1.mp4"
+              data-src="tape_leaky/tape1.mp4"
+              poster="posters/tape_leaky/tape1.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="4"
               />
           </div>
           <div>
             <video
-              src="tape_leaky/tape2.mp4"
+              data-src="tape_leaky/tape2.mp4"
+              poster="posters/tape_leaky/tape2.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="4"
               />
           </div>
           <div>
             <video
-              src="tape_leaky/tape3.mp4"
+              data-src="tape_leaky/tape3.mp4"
+              poster="posters/tape_leaky/tape3.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="4"
               />
           </div>
           <div>
             <video
-              src="tape_leaky/tape4.mp4"
+              data-src="tape_leaky/tape4.mp4"
+              poster="posters/tape_leaky/tape4.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="4"
               />
           </div>
         </div>
@@ -226,59 +289,59 @@ body:
         </div>
       </div>
 
-      (4x) Grasp a screwdriver and pack it up
+      **Screwdriver Packing** — grasping and packing a screwdriver across varied initial placements (OOD condition, 4× speed).
       <div uk-slider>
         <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-3@m uk-grid">
           <div>
             <video
-              src="screw_leaky/screw_1.mp4"
+              data-src="screw_leaky/screw_1.mp4"
+              poster="posters/screw_leaky/screw_1.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="4"
               />
           </div>
           <div>
             <video
-              src="screw_leaky/screw_2.mp4"
+              data-src="screw_leaky/screw_2.mp4"
+              poster="posters/screw_leaky/screw_2.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="4"
               />
           </div>
           <div>
             <video
-              src="screw_leaky/screw_3.mp4"
+              data-src="screw_leaky/screw_3.mp4"
+              poster="posters/screw_leaky/screw_3.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="4"
               />
           </div>
           <div>
             <video
-              src="screw_leaky/screw_4.mp4"
+              data-src="screw_leaky/screw_4.mp4"
+              poster="posters/screw_leaky/screw_4.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="4"
               />
           </div>
         </div>
@@ -288,71 +351,72 @@ body:
         </div>
       </div>
 
+      **Screwdriver Packing on Franka** — same task on a single-arm platform with randomized initial placement via tossing (4× speed).
       <div uk-slider>
         <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-2@m uk-grid">
           <div>
             <video
-              src="franka_screw/screw1.mp4"
+              data-src="franka_screw/screw1.mp4"
+              poster="posters/franka_screw/screw1.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="4"
               />
           </div>
           <div>
             <video
-              src="franka_screw/screw2.mp4"
+              data-src="franka_screw/screw2.mp4"
+              poster="posters/franka_screw/screw2.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="4"
               />
           </div>
           <div>
             <video
-              src="franka_screw/screw3.mp4"
+              data-src="franka_screw/screw3.mp4"
+              poster="posters/franka_screw/screw3.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="4"
               />
           </div>
           <div>
             <video
-              src="franka_screw/screw4.mp4"
+              data-src="franka_screw/screw4.mp4"
+              poster="posters/franka_screw/screw4.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="4"
               />
           </div>
           <div>
             <video
-              src="franka_screw/screw5.mp4"
+              data-src="franka_screw/screw5.mp4"
+              poster="posters/franka_screw/screw5.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="4"
               />
           </div>
         </div>
@@ -365,133 +429,138 @@ body:
       <div class="uk-grid-small uk-child-width-1-1@s uk-child-width-1-2@m" uk-grid>
         <div>
           <video
-            src="ppt-pics/throw_screw_web.mp4"
+            data-src="ppt-pics/throw_screw_web.mp4"
+            poster="posters/ppt-pics/throw_screw_web.jpg"
             loop
             muted
-            preload="metadata"
+            preload="none"
             onclick="this.paused ? this.play() : this.pause()"
             style="cursor: pointer"
             />
         </div>
         <div>
           <h3>Randomization via Tossing</h3>
-          <p>With a small amount of demonstrations, SViP can adapt to unseen object placements and accomplish gestures that the leader arm of the teleoperation system cannot reach.</p>
+          <p>The equivariant primitive adapts to unseen object placements introduced by tossing — poses that the teleoperation hardware cannot even demonstrate directly.</p>
         </div>
       </div>
 
-  - title: 'Assemble Learned Skills for Novel Tasks'
+  - title: 'Composing Skills for Novel Long-Horizon Tasks'
     text: |
+      A compact repertoire of separately-learned skill types recombines to cover tasks far longer than any individual demonstration. Skills can be improved in isolation — replacing a weak sub-skill does not require re-collecting the full task sequence.
 
+      **Three-Tapes** — a single handoff skill, repeated by TAMP to fill a basket with three tape rolls (21-step plan skeleton, 6× speed).
       <div class="uk-grid-small uk-child-width-1-1@s" uk-grid>
         <div class="uk-width-1-1@m">
           <video
-            src="ppt-pics/3tape_web.mp4"
+            data-src="ppt-pics/3tape_web.mp4"
+            poster="posters/ppt-pics/3tape_web.jpg"
             loop
             muted
             controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
             onclick="this.paused ? this.play() : this.pause()"
             style="cursor: pointer"
             />
         </div>
       </div>
 
+      **Cup-Sponge-Screwdriver** — three distinct bimanual skills composed into a 19-step plan skeleton (6× speed).
       <div class="uk-grid-small uk-child-width-1-1@s" uk-grid>
         <div>
           <video
-            src="ppt-pics/3skills_web.mp4"
+            data-src="ppt-pics/3skills_web.mp4"
+            poster="posters/ppt-pics/3skills_web.jpg"
             loop
             muted
             controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
             onclick="this.paused ? this.play() : this.pause()"
             style="cursor: pointer"
             />
         </div>
-
       </div>
 
-      Experiments (6X) under different initial object placements.
+      Six rollouts under different initial object placements (6× speed).
       <div uk-slider>
         <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-3@m uk-grid">
           <div>
             <video
-              src="aloha2-vid/3skills-web1.mp4"
+              data-src="aloha2-vid/3skills-web1.mp4"
+              poster="posters/aloha2-vid/3skills-web1.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="6"
               />
           </div>
           <div>
             <video
-              src="aloha2-vid/3skills-web2.mp4"
+              data-src="aloha2-vid/3skills-web2.mp4"
+              poster="posters/aloha2-vid/3skills-web2.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="6"
               />
           </div>
           <div>
             <video
-              src="aloha2-vid/3skills-web3.mp4"
+              data-src="aloha2-vid/3skills-web3.mp4"
+              poster="posters/aloha2-vid/3skills-web3.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="6"
               />
           </div>
           <div>
             <video
-              src="aloha2-vid/3skills-web4.mp4"
+              data-src="aloha2-vid/3skills-web4.mp4"
+              poster="posters/aloha2-vid/3skills-web4.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="6"
               />
           </div>
           <div>
             <video
-              src="aloha2-vid/3skills-web5.mp4"
+              data-src="aloha2-vid/3skills-web5.mp4"
+              poster="posters/aloha2-vid/3skills-web5.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="6"
               />
           </div>
           <div>
             <video
-              src="aloha2-vid/3skills-web6.mp4"
+              data-src="aloha2-vid/3skills-web6.mp4"
+              poster="posters/aloha2-vid/3skills-web6.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
-              data-playback-rate="6"
               />
           </div>
         </div>
@@ -501,90 +570,98 @@ body:
         </div>
       </div>
 
-  - title: 'Simulation videos'
+  - title: 'Simulation Benchmarks (LIBERO & DexMimicGen)'
     text: |
+      DR-LfD (Closed-loop) matches or outperforms all baselines across LIBERO Spatial, Object, and Long subsets, and across DexMimicGen bimanual threading and assembly tasks.
       <div uk-slider>
         <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-3@m uk-grid">
           <div>
             <video
-              src="libero_dmg/spatial1.mp4"
+              data-src="libero_dmg/spatial1.mp4"
+              poster="posters/libero_dmg/spatial1.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
               />
           </div>
           <div>
             <video
-              src="libero_dmg/obj1.mp4"
+              data-src="libero_dmg/obj1.mp4"
+              poster="posters/libero_dmg/obj1.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
               />
           </div>
           <div>
             <video
-              src="libero_dmg/living_retry.mp4"
+              data-src="libero_dmg/living_retry.mp4"
+              poster="posters/libero_dmg/living_retry.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
               />
           </div>
           <div>
             <video
-              src="libero_dmg/kitchen_compressed.mp4"
+              data-src="libero_dmg/kitchen_compressed.mp4"
+              poster="posters/libero_dmg/kitchen_compressed.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
               />
           </div>
           <div>
             <video
-              src="libero_dmg/study_compressed.mp4"
+              data-src="libero_dmg/study_compressed.mp4"
+              poster="posters/libero_dmg/study_compressed.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
               />
           </div>
           <div>
             <video
-              src="libero_dmg/threading.mp4"
+              data-src="libero_dmg/threading.mp4"
+              poster="posters/libero_dmg/threading.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
               />
           </div>
           <div>
             <video
-              src="libero_dmg/assemble.mp4"
+              data-src="libero_dmg/assemble.mp4"
+              poster="posters/libero_dmg/assemble.jpg"
               loop
               muted
               controls
               controlsList="nodownload"
-              preload="metadata"
+              preload="none"
               onclick="this.paused ? this.play() : this.pause()"
               style="cursor: pointer"
               />

@@ -84,45 +84,38 @@ export default class Body extends React.Component {
     });
   }
 
-  setupVideoResetOnSlide() {
-    // Find all videos in sliders and reset them when they go out of view
-    const videos = document.querySelectorAll('div[uk-slider] video');
-
-    if (videos.length === 0) return;
-
-    // Use Intersection Observer to detect when videos go out of view
+  setupVideoObserver() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           const video = entry.target;
-          if (!entry.isIntersecting) {
-            // Video is out of view - pause and reset
-            if (!video.paused) {
-              video.pause();
-            }
+          // Lazy-load: swap data-src → src the first time the video nears the viewport
+          if (entry.isIntersecting && video.dataset.src) {
+            video.src = video.dataset.src;
+            video.removeAttribute('data-src');
+          }
+          // Pause + reset slider videos when they scroll out of view
+          if (!entry.isIntersecting && video.closest('div[uk-slider]')) {
+            if (!video.paused) video.pause();
             video.currentTime = 0;
           }
         });
       },
       {
-        threshold: 0.1, // Trigger when less than 10% visible
-        rootMargin: '0px',
+        threshold: 0.1,
+        rootMargin: '200px', // start loading 200px before entering viewport
       }
     );
 
-    videos.forEach((video) => {
+    document.querySelectorAll('video').forEach((video) => {
       observer.observe(video);
     });
 
-    // Also listen to UIKit slider events as a fallback
-    const sliders = document.querySelectorAll('div[uk-slider]');
-    sliders.forEach((slider) => {
-      // Listen for slider item changes
+    // UIKit slider fallback: reset off-slide videos on slide change
+    document.querySelectorAll('div[uk-slider]').forEach((slider) => {
       slider.addEventListener('itemshown', (e) => {
-        // Reset all videos in this slider that are not the shown one
-        const allVideos = slider.querySelectorAll('video');
         const shownItem = e.detail[0];
-        allVideos.forEach((video) => {
+        slider.querySelectorAll('video').forEach((video) => {
           if (!shownItem.contains(video) && !video.paused) {
             video.pause();
             video.currentTime = 0;
@@ -133,18 +126,16 @@ export default class Body extends React.Component {
   }
 
   componentDidMount() {
-    // Set playback rates after initial render
     setTimeout(() => {
       this.setVideoPlaybackRates();
-      this.setupVideoResetOnSlide();
+      this.setupVideoObserver();
     }, 100);
   }
 
   componentDidUpdate() {
-    // Set playback rates after content updates
     setTimeout(() => {
       this.setVideoPlaybackRates();
-      this.setupVideoResetOnSlide();
+      this.setupVideoObserver();
     }, 100);
   }
 
@@ -153,11 +144,15 @@ export default class Body extends React.Component {
       <div className="uk-section">
         {this.props.body.map((subsection, idx) => {
           return (
-            <div key={'subsection-' + idx}>
+            <section
+              className="project-section"
+              id={`section-${idx}`}
+              key={'subsection-' + idx}
+            >
               <Content title={subsection.title} />
               <Content image={subsection.image} />
               <Content text={subsection.text} />
-            </div>
+            </section>
           );
         })}
       </div>
