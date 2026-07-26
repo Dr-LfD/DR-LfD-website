@@ -64,43 +64,31 @@ body:
       ### System Advantages
 
       <div class="system-advantages" aria-label="DR-LfD system advantages">
-        <article class="uk-card uk-card-default uk-card-body system-advantage">
-          <h4>Heterogeneous Skill Composition</h4>
-          <p>The planner temporally composes visuomotor policies, object-centric primitives, and predefined motion skills. Contact conditions make each skill transition explicit and interpretable.</p>
-        </article>
-        <article class="uk-card uk-card-default uk-card-body system-advantage">
-          <h4>Pose-Free Spatial Generalization</h4>
-          <p>Object-centric primitives use SE(3)-equivariant learning to adapt to new object placements and orientations without explicit 6-DoF object-pose estimation.</p>
-        </article>
-        <article class="uk-card uk-card-default uk-card-body system-advantage">
-          <h4>Feasibility-Aware Visuomotor Policies</h4>
-          <p>Unlike prior visuomotor policies, DR-LfD exposes policy safety and reachability constraints to the planner. It can test whether a policy is feasible and insert corrective steps when needed.</p>
-        </article>
-        <article class="uk-card uk-card-default uk-card-body system-advantage">
-          <h4>Dual-Arm Online Replanning</h4>
-          <p>The system tracks dual-arm contact progress, re-perceives and verifies each skill outcome, and locally replans when the observed state differs from the expected state.</p>
-        </article>
+        <a class="system-advantage-link" href="#section-4">
+          <article class="uk-card uk-card-default uk-card-body system-advantage">
+            <h4>Heterogeneous Skill Composition</h4>
+            <p>The planner temporally composes visuomotor policies, object-centric primitives, and predefined motion skills. Contact conditions make each skill transition explicit and interpretable.</p>
+          </article>
+        </a>
+        <a class="system-advantage-link" href="#section-3">
+          <article class="uk-card uk-card-default uk-card-body system-advantage">
+            <h4>Pose-Free Spatial Generalization</h4>
+            <p>Object-centric primitives use SE(3)-equivariant learning to adapt to new object placements and orientations without explicit 6-DoF object-pose estimation.</p>
+          </article>
+        </a>
+        <a class="system-advantage-link" href="#section-2">
+          <article class="uk-card uk-card-default uk-card-body system-advantage">
+            <h4>Physical Constraint Handling</h4>
+            <p>Unlike prior visuomotor policies, DR-LfD exposes policy safety and reachability constraints to the planner. It can test whether a policy is feasible and insert corrective steps when needed.</p>
+          </article>
+        </a>
+        <a class="system-advantage-link" href="#section-6">
+          <article class="uk-card uk-card-default uk-card-body system-advantage">
+            <h4>Dual-Arm Online Replanning</h4>
+            <p>The system tracks dual-arm contact progress, re-perceives and verifies each skill outcome, and locally replans when the observed state differs from the expected state.</p>
+          </article>
+        </a>
       </div>
-
-  - title: 'Results'
-    text: |
-      #### Spatial Generalization — Real World (n = 20 per setup)
-
-      Three tasks on ALOHA hardware. **ID**: in-distribution placements. **OOD**: position/rotation shift. **Leaky**: target object rotated and leaning against a distractor.
-
-      | Task | Setup | DP | π₀.₅ | **DR-LfD** |
-      |---|---|---|---|---|
-      | Object Handoff | ID | 90% | 100% | **100%** |
-      | | OOD | 30% | 20% | **95%** |
-      | | Leaky | 60% | 90% | **100%** |
-      | Screwdriver Packing | ID | 55% | 60% | **80%** |
-      | | OOD | 10% | 10% | **80%** |
-      | | Leaky | 0% | **75%** | 65% |
-      | Cup-sleeve Insertion | ID | 75% | **85%** | 80% |
-      | | OOD | 35% | 25% | **75%** |
-      | | Leaky | 35% | 35% | **40%** |
-
-      DR-LfD consistently dominates under OOD placement shifts, including outperforming the large pretrained π₀.₅ model. Under the Leaky condition, Screwdriver Packing shows π₀.₅ ahead (75% vs 65%), and Cup-sleeve Leaky is low for all methods — a conjunctive effect of fine-grained insertion requirements and noisy single-view depth sensing.
 
   - title: 'Constraint Handling: Reachability & Safety'
     text: |
@@ -569,6 +557,26 @@ body:
           <a class="uk-icon-button uk-margin-small-left" href uk-slidenav-next uk-slider-item="next"></a>
         </div>
       </div>
+
+  - title: 'Statistical Results'
+    text: |
+      #### Spatial Generalization — Real World (n = 20 per setup)
+
+      Three tasks on ALOHA hardware. **ID**: in-distribution placements. **OOD**: position/rotation shift. **Leaky**: target object rotated and leaning against a distractor.
+
+      | Task | Setup | DP | π₀.₅ | **DR-LfD** |
+      |---|---|---|---|---|
+      | Object Handoff | ID | 90% | 100% | **100%** |
+      | | OOD | 30% | 20% | **95%** |
+      | | Leaky | 60% | 90% | **100%** |
+      | Screwdriver Packing | ID | 55% | 60% | **80%** |
+      | | OOD | 10% | 10% | **80%** |
+      | | Leaky | 0% | **75%** | 65% |
+      | Cup-sleeve Insertion | ID | 75% | **85%** | 80% |
+      | | OOD | 35% | 25% | **75%** |
+      | | Leaky | 35% | 35% | **40%** |
+
+      DR-LfD consistently dominates under OOD placement shifts, including outperforming the large pretrained π₀.₅ model. Under the Leaky condition, Screwdriver Packing shows π₀.₅ ahead (75% vs 65%), and Cup-sleeve Leaky is low for all methods — a conjunctive effect of fine-grained insertion requirements and noisy single-view depth sensing.
 
   - title: 'Simulation Benchmarks (LIBERO & DexMimicGen)'
     text: |

@@ -124,12 +124,27 @@ html {
   border: 1px solid #d7e5f6;
   min-height: 10.5rem;
   padding: 1.25rem;
+  transition:
+    border-color 150ms ease,
+    transform 150ms ease;
 }
 
 .system-advantage h4 {
   color: #1d416d;
   font-size: 1rem;
   margin: 0 0 0.6rem;
+}
+
+.system-advantage-link {
+  color: inherit;
+  display: block;
+  text-decoration: none;
+}
+
+.system-advantage-link:hover .system-advantage,
+.system-advantage-link:focus-visible .system-advantage {
+  border-color: #4a86e8;
+  transform: translateY(-2px);
 }
 
 .system-advantage p {
