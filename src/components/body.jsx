@@ -67,11 +67,15 @@ export default class Body extends React.Component {
   }
 
   setVideoPlaybackRates() {
-    // Find all video elements and set their playback rate based on data attribute
-    const videos = document.querySelectorAll('video[data-playback-rate]');
+    // Scans the whole document (not just this instance's subtree), and the page
+    // can mount more than one Body — guard against double-attaching listeners.
+    const videos = document.querySelectorAll(
+      'video[data-playback-rate]:not([data-rate-bound])'
+    );
     videos.forEach((video) => {
       const playbackRate = parseFloat(video.getAttribute('data-playback-rate'));
       if (!isNaN(playbackRate) && playbackRate > 0) {
+        video.dataset.rateBound = 'true';
         video.playbackRate = playbackRate;
         // Also set it when the video starts playing (for autoplay videos)
         video.addEventListener('loadedmetadata', () => {
@@ -107,22 +111,29 @@ export default class Body extends React.Component {
       }
     );
 
-    document.querySelectorAll('video').forEach((video) => {
-      observer.observe(video);
-    });
+    // Same double-mount concern as above: skip videos/sliders already wired up.
+    document
+      .querySelectorAll('video:not([data-observer-bound])')
+      .forEach((video) => {
+        video.dataset.observerBound = 'true';
+        observer.observe(video);
+      });
 
     // UIKit slider fallback: reset off-slide videos on slide change
-    document.querySelectorAll('div[uk-slider]').forEach((slider) => {
-      slider.addEventListener('itemshown', (e) => {
-        const shownItem = e.detail[0];
-        slider.querySelectorAll('video').forEach((video) => {
-          if (!shownItem.contains(video) && !video.paused) {
-            video.pause();
-            video.currentTime = 0;
-          }
+    document
+      .querySelectorAll('div[uk-slider]:not([data-slider-bound])')
+      .forEach((slider) => {
+        slider.dataset.sliderBound = 'true';
+        slider.addEventListener('itemshown', (e) => {
+          const shownItem = e.detail[0];
+          slider.querySelectorAll('video').forEach((video) => {
+            if (!shownItem.contains(video) && !video.paused) {
+              video.pause();
+              video.currentTime = 0;
+            }
+          });
         });
       });
-    });
   }
 
   componentDidMount() {
@@ -146,7 +157,7 @@ export default class Body extends React.Component {
           return (
             <section
               className="project-section"
-              id={`section-${idx}`}
+              id={`section-${idx + (this.props.idOffset || 0)}`}
               key={'subsection-' + idx}
             >
               <Content title={subsection.title} />

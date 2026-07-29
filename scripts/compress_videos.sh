@@ -12,14 +12,19 @@ SRC=public
 DST=public_optim
 
 encode() {
-  local in="$1" out="$2" speed="${3:-1}" extra_vf="${4:-}"
+  local in="$1" out="$2" speed="${3:-1}" extra_vf="${4:-}" fps="${5:-}"
   mkdir -p "$(dirname "$out")"
   [[ -f "$out" ]] && { echo "  SKIP (exists) $out"; return; }
   local vf="scale=-2:'min(720,ih)'"
   [[ "$speed" != "1" ]] && vf="${vf},setpts=PTS/${speed}"
   [[ -n "$extra_vf" ]] && vf="${vf},${extra_vf}"
+  # setpts only rewrites timestamps, so a sped-up clip reports speed*src_fps.
+  # Pinning an output fps makes the frame drop deterministic across ffmpeg versions.
+  local fps_opt=()
+  [[ -n "$fps" ]] && fps_opt=(-r "$fps")
   ffmpeg -y -i "$in" \
     -vf "$vf" \
+    "${fps_opt[@]}" \
     -c:v libx264 -profile:v high -pix_fmt yuv420p \
     -crf 28 -preset slow -movflags +faststart \
     -an \
@@ -32,10 +37,10 @@ encode() {
 }
 
 poster() {
-  local in="$1" out="$2"
+  local in="$1" out="$2" ts="${3:-00:00:01}"
   mkdir -p "$(dirname "$out")"
   [[ -f "$out" ]] && { echo "  SKIP poster $out"; return; }
-  ffmpeg -y -ss 00:00:01 -i "$in" -frames:v 1 \
+  ffmpeg -y -ss "$ts" -i "$in" -frames:v 1 \
     -vf "scale=-2:'min(720,ih)'" -q:v 4 \
     "$out" 2>/dev/null
   echo "  poster -> $out ($(du -h "$out" | cut -f1))"
@@ -105,6 +110,21 @@ mkdir -p "$DST/ppt-pics"
     "$DST/ppt-pics/sup-vid.mp4" 2>&1 | tail -1
 echo "  sup-vid: $(du -h "$SRC/ppt-pics/sup-vid.mp4"|cut -f1) -> $(du -h "$DST/ppt-pics/sup-vid.mp4" 2>/dev/null|cut -f1 || echo pending)"
 poster "$SRC/ppt-pics/sup-vid.mp4" "$DST/posters/ppt-pics/sup-vid.jpg"
+
+echo "====== reactive (contact-monitor recovery; .avi -> .mp4, renamed by task) ======"
+# The two .avi sources are mpeg4-in-avi and unplayable in every browser.
+# Outputs are renamed to the task they show; the reactive/ folder carries the rest.
+# Sources were moved out of public/ after encoding; masters live in ~/yzchen_ws/vid/reactive_raw/.
+encode "$SRC/reactive/cup_2try.avi"    "$DST/reactive/handoff.mp4"     2 "" 30
+encode "$SRC/reactive/screwdriver.avi" "$DST/reactive/screwdriver.mp4" 2 "" 30
+encode "$SRC/reactive/sponge.mp4"      "$DST/reactive/cupwipe.mp4"     1
+encode "$SRC/reactive/cup.mp4"         "$DST/reactive/longhorizon.mp4" 4 "" 30
+# Posters come from the encoded output, so timestamps are in sped-up time.
+# Hand-picked per clip: the default 1s lands before the disturbance and shows an empty table.
+poster "$DST/reactive/handoff.mp4"     "$DST/posters/reactive/handoff.jpg"     0.6
+poster "$DST/reactive/screwdriver.mp4" "$DST/posters/reactive/screwdriver.jpg" 1.2
+poster "$DST/reactive/cupwipe.mp4"     "$DST/posters/reactive/cupwipe.jpg"     4.5
+poster "$DST/reactive/longhorizon.mp4" "$DST/posters/reactive/longhorizon.jpg" 2.0
 
 echo "====== libero_dmg: skip (already small) ======"
 mkdir -p "$DST/libero_dmg" "$DST/posters/libero_dmg"
