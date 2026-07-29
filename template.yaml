@@ -51,12 +51,12 @@ body:
       2. **Decompose** — A VLM finds changes in robot–object and object–object contact. Each segment becomes an atomic skill with clear start and end conditions.
 
 
-      <img src="paper-figures/vlm-grounding.png" alt="VLM-based contact relationship grounding for demonstration decomposition" loading="lazy" style="max-width:70%;" />
+      <img src="paper-figures/vlm-grounding.png" alt="VLM-based contact relationship grounding for demonstration decomposition" loading="lazy" style="max-width:50%;" />
 
       3. **Learn each skill** — Train object-centric primitives for pick-and-place actions and visuomotor policies for contact-rich actions. Use standard TAMP motion skills for free-space moves.
 
 
-      <img src="paper-figures/skillequivNet.png" alt="SO(3)-equivariant object-centric skill network" loading="lazy" />
+      <img src="paper-figures/skillequivNet.png" alt="SO(3)-equivariant object-centric skill network" loading="lazy"  style="max-width:80%;" />
 
       4. **Plan a new task** — The task-and-motion planner (TAMP) selects and orders the learned skills. Safety and reachability constraints let it add regrasping or obstacle-removal steps when needed.
       5. **Execute and verify** — The robot perceives, plans, acts, and checks the result of each step. It replans locally if a step fails.
@@ -82,7 +82,7 @@ body:
             <p>Unlike prior visuomotor policies, DR-LfD exposes policy safety and reachability constraints to the planner. It can test whether a policy is feasible and insert corrective steps when needed.</p>
           </article>
         </a>
-        <a class="system-advantage-link" href="#section-6">
+        <a class="system-advantage-link" href="#section-5">
           <article class="uk-card uk-card-default uk-card-body system-advantage">
             <h4>Dual-Arm Online Replanning</h4>
             <p>The system tracks dual-arm contact progress, re-perceives and verifies each skill outcome, and locally replans when the observed state differs from the expected state.</p>
@@ -555,6 +555,69 @@ body:
         <div class="uk-flex uk-flex-center uk-margin-small">
           <a class="uk-icon-button" href uk-slidenav-previous uk-slider-item="previous"></a>
           <a class="uk-icon-button uk-margin-small-left" href uk-slidenav-next uk-slider-item="next"></a>
+        </div>
+      </div>
+
+  - title: 'Reactive Recovery from External Disturbance'
+    text: |
+      A contact monitor at the end of each skill catches disturbances and triggers local replanning to recover.
+
+      <div class="uk-grid-small uk-child-width-1-2@m" uk-grid>
+        <div>
+          <p class="uk-margin-small-bottom"><strong>Object handoff</strong> — cup pulled away mid-reach (2× speed).</p>
+          <video
+            data-src="reactive/handoff.mp4"
+            poster="posters/reactive/handoff.jpg"
+            loop
+            muted
+            controls
+            controlsList="nodownload"
+            preload="none"
+            onclick="this.paused ? this.play() : this.pause()"
+            style="cursor: pointer"
+            />
+        </div>
+        <div>
+          <p class="uk-margin-small-bottom"><strong>Screwdriver packing</strong> — screwdriver taken away (2× speed).</p>
+          <video
+            data-src="reactive/screwdriver.mp4"
+            poster="posters/reactive/screwdriver.jpg"
+            loop
+            muted
+            controls
+            controlsList="nodownload"
+            preload="none"
+            onclick="this.paused ? this.play() : this.pause()"
+            style="cursor: pointer"
+            />
+        </div>
+        <div>
+          <p class="uk-margin-small-bottom"><strong>Cup wiping</strong> — cup relocated before wiping.</p>
+          <video
+            data-src="reactive/cupwipe.mp4"
+            poster="posters/reactive/cupwipe.jpg"
+            loop
+            muted
+            controls
+            controlsList="nodownload"
+            preload="none"
+            onclick="this.paused ? this.play() : this.pause()"
+            style="cursor: pointer"
+            />
+        </div>
+        <div>
+          <p class="uk-margin-small-bottom"><strong>Long-horizon composition</strong> — full cup-sponge-screwdriver task, no disturbance (4× speed).</p>
+          <video
+            data-src="reactive/longhorizon.mp4"
+            poster="posters/reactive/longhorizon.jpg"
+            loop
+            muted
+            controls
+            controlsList="nodownload"
+            preload="none"
+            onclick="this.paused ? this.play() : this.pause()"
+            style="cursor: pointer"
+            />
         </div>
       </div>
 
