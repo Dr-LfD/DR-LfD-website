@@ -76,8 +76,8 @@ html {
 }
 
 .section-navigation__list {
-  align-items: stretch;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(5, auto);
   justify-content: center;
   list-style: none;
   margin: 0;
@@ -91,7 +91,8 @@ html {
   display: flex;
   font-size: 0.78rem;
   font-weight: 600;
-  height: 3.25rem;
+  height: 2.25rem;
+  justify-content: center;
   letter-spacing: 0.01em;
   padding: 0 0.85rem;
   position: relative;
@@ -127,7 +128,7 @@ html {
 }
 
 .project-section {
-  scroll-margin-top: 4.75rem;
+  scroll-margin-top: 5.5rem;
 }
 
 .project-section + .project-section {
@@ -237,7 +238,6 @@ html {
   }
 
   .section-navigation__list a {
-    height: 3rem;
     padding: 0 0.7rem;
   }
 
@@ -350,28 +350,12 @@ body {
   }
   strong {
     color: #176650;
-    font-size: clamp(48px, 5.8vw, 76px);
+    font-size: clamp(26px, 2.8vw, 36px);
     font-weight: 600;
-    line-height: 1.3;
-    letter-spacing: -0.06em;
-    font-variant-numeric: tabular-nums;
-  }
-  strong span {
-    font-size: 0.44em;
+    line-height: 1.2;
     letter-spacing: -0.02em;
+    margin-bottom: 8px;
   }
-  small {
-    font-size: 11px;
-    color: #6c7770;
-    margin-top: 7px;
-  }
-}
-.metric-context {
-  color: #6c7770;
-  text-transform: uppercase;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  font-weight: 600;
 }
 .metric-label {
   font-size: 14px;
@@ -562,15 +546,8 @@ summary:focus-visible {
   .headline-metric {
     padding: 0 10px 0 0;
     strong {
-      font-size: 43px;
+      font-size: 22px;
     }
-    small {
-      font-size: 10px;
-    }
-  }
-  .metric-context {
-    font-size: 8px;
-    min-height: 26px;
   }
   .metric-label {
     font-size: 11px;
@@ -600,9 +577,6 @@ summary:focus-visible {
     border-right: 0;
     border-bottom: 1px solid #dce4de;
     padding: 18px 0;
-  }
-  .metric-context {
-    min-height: 0;
   }
 }
 @media (prefers-reduced-motion: reduce) {

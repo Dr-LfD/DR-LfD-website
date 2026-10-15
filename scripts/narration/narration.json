@@ -27,7 +27,7 @@
     "start": 57.9,
     "end": 67.3,
     "slide": "Physical Constraints",
-    "text": "Because a planner is in the loop, the robot also respects physical constraints: reachability on the left, and safety on the right."
+    "text": "With a planner in the loop, the robot also meets physical constraints: reachability on the left, and safety on the right."
   },
   {
     "start": 67.3,
@@ -39,13 +39,13 @@
     "start": 86.5,
     "end": 94.2,
     "slide": "Spatial Generalization (robot)",
-    "text": "In general, visuomotor imitation policies, like diffusion policy, are often brittle under unseen object placements."
+    "text": "Visuomotor imitation policies, like diffusion policy, are often brittle under unseen placements."
   },
   {
     "start": 94.2,
     "end": 103.5,
     "slide": "Spatial Generalization (operator)",
-    "text": "And we cannot simply collect more data. For some placements, like the one on the right, the operator fails to perform the teleoperation at all."
+    "text": "And we cannot simply collect more data: for some placements, like this one on the right, teleoperation fails."
   },
   {
     "start": 103.5,
@@ -57,7 +57,7 @@
     "start": 108.5,
     "end": 114.0,
     "slide": "Franka demonstration",
-    "text": "We start with screwdriver packing on a dual-arm Franka robot. Here is a demonstration."
+    "text": "First, screwdriver packing on a dual-arm Franka. Here's the demo."
   },
   {
     "start": 114.0,
@@ -117,7 +117,7 @@
     "start": 204.2,
     "end": 209.6,
     "slide": "Peg-in-hole demonstration",
-    "text": "We also test peg-in-hole insertion in simulation, using the scripted dataset from Zhao et al."
+    "text": "Then, peg-in-hole in simulation, with Zhao et al.'s dataset."
   },
   {
     "start": 209.6,
@@ -147,7 +147,7 @@
     "start": 284.8,
     "end": 299.5,
     "slide": "Closed-loop Robustness",
-    "text": "DR-LfD is also robust in closed loop. A contact detector locates failed subgoals and triggers replanning. Here, a person moves the screwdriver, the cup, and the sponge, and the robot replans each time."
+    "text": "DR-LfD is also robust in closed loop. A contact detector locates failed subgoals and triggers replanning. Here, a person moves the screwdriver, cup, and sponge, and the robot replans."
   },
   {
     "start": 299.5,
@@ -165,7 +165,7 @@
     "start": 320.7,
     "end": 324.6,
     "slide": "Typical Failures",
-    "text": "Finally, here are typical failures of DR-LfD: unexpected dynamics,"
+    "text": "Typical failures: unexpected dynamics,"
   },
   {
     "start": 324.6,

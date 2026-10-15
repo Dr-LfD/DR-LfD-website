@@ -1,7 +1,7 @@
 theme: default # default || classic || dark
 # organization: Pixel Genius Labs
 # twitter: '@denkivvakame'
-title: 'Decompose and Reorganize: Planning with  Primitives and Visuomotor Policies Learned from Demonstrations'
+title: 'Decompose and Reorganize: Planning with Primitives and Visuomotor Policies Learned from Demonstrations'
 tabTitle: 'DR-LfD' # Short title for browser tab
 # journal: 'In revision, IEEE T-RO'
 resources:
@@ -9,79 +9,68 @@ resources:
   # arxiv: https://arxiv.org
   code: https://github.com/Dr-LfD/Dr-LfD-dualArm
   video: 'ppt-pics/sup-vid-web.mp4'
-description: DR-LfD composes learned manipulation skills with task and motion planning. 95% OOD object handoff success and 21-step skill composition.
+description: DR-LfD composes learned manipulation skills with task and motion planning. Skills trained from 20 demos each are reused across tasks, outperform π₀.₅ on unseen placements, and respect reachability and obstacle constraints.
 
-image: https://denkiwakame.github.io/academic-project-template/teaser.jpg
-url: https://denkiwakame.github.io/academic-project-template
+image: https://dr-lfd.github.io/DR-LfD-website/paper-figures/tro-teaser.png
+url: https://dr-lfd.github.io/DR-LfD-website
 speakerdeck: # speakerdeck slide ID
 navigation:
   - label: Overview
     target: overview
   - label: Skill Reuse and Composition
     target: section-4
-  - label: Method
+  - label: How It Works
     target: section-1
-  - label: Constraint handling
-    target: section-2
-  - label: Spatial generalization
+  - label: Spatial Generalization
     target: section-3
-  - label: Online replanning
+  - label: Constraint Handling
+    target: section-2
+  - label: Reactive Recovery
     target: section-5
-  - label: Results
+  - label: Real-world Results
     target: section-6
-  - label: Task Settings
+  - label: Simulation Benchmarks
+    target: section-7
+  - label: Real-world Task Settings
     target: section-8
 authors:
   - name: Anonymous
     affiliation: [1]
-    position: Researcher
-    url: https://thispersondoesnotexist.com/
 affiliations:
   - Anonymous
 
 teaser: paper-figures/tro-teaser.webp
 abstract: |
-  DR-LfD (<u>D</u>ecomposed and <u>R</u>eorganized Skills <u>L</u>earned <u>f</u>rom <u>D</u>emonstrations) combines learned manipulation skills with task and motion planning (TAMP) for long-horizon, contact-rich tasks. Contact changes partition demonstrations into atomic skills, learned as visuomotor policies or object-centric primitives. TAMP-compatible initiation conditions, termination conditions, and physical constraints let the planner compose skills learned from different sources. Demonstration collection scales with the number of distinct skill types, while the planner reuses these skills across task sequences. Real-world and simulation experiments evaluate spatial generalization, long-horizon composition, and physical constraint handling.
+  DR-LfD (<u>D</u>ecompose and <u>R</u>eorganize Skills <u>L</u>earned <u>f</u>rom <u>D</u>emonstrations) combines learned manipulation skills with task and motion planning (TAMP) for long-horizon, contact-rich tasks. Contact changes partition demonstrations into atomic skills, learned as visuomotor policies or object-centric primitives. TAMP-compatible initiation conditions, termination conditions, and physical constraints let the planner compose skills learned from different sources. Demonstration collection scales with the number of distinct skill types, while the planner reuses these skills across task sequences. Real-world and simulation experiments evaluate spatial generalization, long-horizon composition, and physical constraint handling.
 
 body:
-  - title: 'Skill Reuse and Composition'
-    id: section-4
-    highlight: |
+  - title: 'Highlights'
+    id: highlights
+    text: |
       <div class="headline-metrics" aria-label="Key results">
-        <a href="#section-6" class="headline-metric">
-          <span class="metric-context">Unseen placements</span>
-          <strong>
-            95<span>%</span>
-          </strong>
-          <span class="metric-label">Object handoff success</span>
-          <small>OOD · 19/20 trials · DP: 30%</small>
-        </a>
-        <a href="#section-6" class="headline-metric">
-          <span class="metric-context">
-            Stronger spatial generalization
-          </span>
-          <strong>
-            +70<span> pp</span>
-          </strong>
-          <span class="metric-label">Screwdriver packing vs. DP</span>
-          <small>OOD · 80% vs. 10% · 20 trials each</small>
-        </a>
         <a href="#section-4" class="headline-metric">
-          <span class="metric-context">Long-horizon composition</span>
-          <strong>
-            21<span> steps</span>
-          </strong>
-          <span class="metric-label">One handoff skill, reused</span>
-          <small>Three-Tapes plan skeleton</small>
+          <strong>Skill reuse</strong>
+          <span class="metric-label">Trained skills recomposed, 20 demos each</span>
+        </a>
+        <a href="#section-6" class="headline-metric">
+          <strong>Spatial generalization</strong>
+          <span class="metric-label">83% vs. 18% for π₀.₅ on unseen placements</span>
+        </a>
+        <a href="#section-2" class="headline-metric">
+          <strong>Constraint aware</strong>
+          <span class="metric-label">Reachability and obstacle avoidance for visuomotor policies</span>
         </a>
       </div>
+
+  - title: 'Skill Reuse and Composition'
+    id: section-4
     text: |
-      Separately learned skills combine into long-horizon tasks. Each skill can be refined with its own demonstrations and reused in the full task.
+      DR-LfD composes three skills (screwdriver packing, cup handoff, and cup wiping), each learned from 20 demos, to reach a long-horizon goal.
 
 
       <article class="media-card">
         <div class="media-card__copy">
-          <h3>Skill composition and reusing</h3>
+          <h3>Skill composition and reuse</h3>
           <p>Compose skills to solve long-horizon, human-specified tasks.</p>
         </div>
         <figure>
@@ -180,17 +169,12 @@ body:
   - title: 'Key Contributions'
     id: section-0
     text: |
-      <details>
-      <summary>Core idea and contributions</summary>
-
       > **Core idea:** DR-LfD learns individual manipulation skills from demonstrations and composes them with TAMP to achieve new task goals.
 
       - **TAMP-gated system** — Contact changes define atomic skills that TAMP composes into task plans.
       - **Object-centric primitives** — Equivariant diffusion models learn object-centric primitives that adapt to new object positions and orientations.
       - **TAMP-compatible visuomotor policies** — Initiation conditions, termination conditions, and physical constraints connect learned policies to sampling-based TAMP.
       - **Evaluation** — Real-world and simulation experiments test skill composition, spatial generalization, and physical constraint handling against imitation learning baselines.
-
-      </details>
 
   - title: 'How It Works'
     id: section-1
@@ -252,7 +236,7 @@ body:
         <a class="system-advantage-link" href="#section-2">
           <article class="uk-card uk-card-default uk-card-body system-advantage">
             <h4>Physical Constraint Handling</h4>
-            <p>DR-LfD exposes policy safety and reachability constraints to the planner, which checks feasibility and inserts corrective actions.</p>
+            <p>DR-LfD exposes reachability and obstacle constraints of each policy to the planner, which checks feasibility and inserts corrective actions.</p>
           </article>
         </a>
         <a class="system-advantage-link" href="#section-5">
@@ -265,135 +249,7 @@ body:
 
       </details>
 
-  - title: 'Constraint Handling: Reachability & Safety'
-    id: section-2
-    text: |
-      <article class="media-card">
-        <div class="media-card__copy">
-          <h3>Reachability and safety</h3>
-          <p>Reachability maps and minimum-distance-field safety checks guide TAMP to insert corrective actions. ACT and DP score 0% in the constrained simulation setups.</p>
-        </div>
-        <figure>
-          <img src="paper-figures/tro-unsafe-unreachable.png" alt="Examples of unreachable and unsafe setups handled through planning" loading="lazy" />
-        </figure>
-      </article>
-
-      ### *Unreachable* Setup
-
-      When an object lies beyond one arm’s reach, DR-LfD uses the other arm to move it into their shared workspace before insertion.
-      <div uk-slider>
-        <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-2@m uk-grid">
-          <div>
-            <video width="1280" height="720"
-              data-src="aloha2-vid/unreach1.mp4"
-              data-poster="posters/aloha2-vid/unreach1.jpg"
-              loop
-              muted
-              controls
-              controlsList="nodownload"
-              preload="none"
-              onclick="this.paused ? this.play() : this.pause()"
-              style="cursor: pointer"
-              />
-          </div>
-          <div>
-            <video width="1280" height="720"
-              data-src="aloha2-vid/unreach2.mp4"
-              data-poster="posters/aloha2-vid/unreach2.jpg"
-              loop
-              muted
-              controls
-              controlsList="nodownload"
-              preload="none"
-              onclick="this.paused ? this.play() : this.pause()"
-              style="cursor: pointer"
-              />
-          </div>
-          <div>
-            <video width="1280" height="720"
-              data-src="aloha2-vid/unreach3.mp4"
-              data-poster="posters/aloha2-vid/unreach3.jpg"
-              loop
-              muted
-              controls
-              controlsList="nodownload"
-              preload="none"
-              onclick="this.paused ? this.play() : this.pause()"
-              style="cursor: pointer"
-              />
-          </div>
-        </div>
-        <div class="uk-flex uk-flex-center uk-margin-small">
-          <a class="uk-icon-button" href uk-slidenav-previous uk-slider-item="previous"></a>
-          <a class="uk-icon-button uk-margin-small-left" href uk-slidenav-next uk-slider-item="next"></a>
-        </div>
-      </div>
-
-      ### *Unsafe* Setup
-
-      When a pole blocks the workspace, DR-LfD relocates it to a safe pose before bimanual insertion.
-      <div uk-slider>
-        <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-3@m uk-grid">
-          <div>
-            <video width="640" height="480"
-              data-src="aloha2-vid/unsafe1.mp4"
-              data-poster="posters/aloha2-vid/unsafe1.jpg"
-              loop
-              muted
-              controls
-              controlsList="nodownload"
-              preload="none"
-              onclick="this.paused ? this.play() : this.pause()"
-              style="cursor: pointer"
-              />
-          </div>
-          <div>
-            <video width="640" height="480"
-              data-src="aloha2-vid/unsafe2.mp4"
-              data-poster="posters/aloha2-vid/unsafe2.jpg"
-              loop
-              muted
-              controls
-              controlsList="nodownload"
-              preload="none"
-              onclick="this.paused ? this.play() : this.pause()"
-              style="cursor: pointer"
-              />
-          </div>
-          <div>
-            <video width="640" height="480"
-              data-src="aloha2-vid/unsafe3.mp4"
-              data-poster="posters/aloha2-vid/unsafe3.jpg"
-              loop
-              muted
-              controls
-              controlsList="nodownload"
-              preload="none"
-              onclick="this.paused ? this.play() : this.pause()"
-              style="cursor: pointer"
-              />
-          </div>
-          <div>
-            <video width="640" height="480"
-              data-src="aloha2-vid/unsafe4.mp4"
-              data-poster="posters/aloha2-vid/unsafe4.jpg"
-              loop
-              muted
-              controls
-              controlsList="nodownload"
-              preload="none"
-              onclick="this.paused ? this.play() : this.pause()"
-              style="cursor: pointer"
-              />
-          </div>
-        </div>
-        <div class="uk-flex uk-flex-center uk-margin-small">
-          <a class="uk-icon-button" href uk-slidenav-previous uk-slider-item="previous"></a>
-          <a class="uk-icon-button uk-margin-small-left" href uk-slidenav-next uk-slider-item="next"></a>
-        </div>
-      </div>
-
-  - title: 'Spatial Generalization: Unseen Setups'
+  - title: 'Spatial Generalization'
     id: section-3
     text: |
       <div class="video-comparison" aria-label="Object handoff examples in OOD and Leaky settings">
@@ -407,7 +263,7 @@ body:
         </figure>
       </div>
 
-      SO(3)-equivariant diffusion primitives trained on ≈20 demonstrations adapt to new object positions and orientations.
+      SE(3)-equivariant diffusion primitives trained on ≈20 demonstrations adapt to new object positions and orientations.
 
       **Object Handoff** — transferring a tape roll from right arm to left arm across varied initial placements (OOD condition, 4× speed).
       <div uk-slider>
@@ -618,7 +474,135 @@ body:
         </figure>
       </article>
 
-  - title: 'Reactive Recovery from External Disturbance'
+  - title: 'Constraint Handling'
+    id: section-2
+    text: |
+      <article class="media-card">
+        <div class="media-card__copy">
+          <h3>Reachability and obstacle avoidance</h3>
+          <p>A visuomotor policy cannot tell whether an object is within reach or whether its motion will hit an obstacle. DR-LfD exposes both constraints to TAMP, which checks them and inserts corrective actions. In simulation, DR-LfD succeeds in 55% of unreachable and 70% of obstructed setups, while ACT and DP fail in all of them.</p>
+        </div>
+        <figure>
+          <img src="paper-figures/tro-unsafe-unreachable.png" alt="Examples of unreachable and obstructed setups handled through planning" loading="lazy" />
+        </figure>
+      </article>
+
+      ### *Unreachable* Setup
+
+      When an object lies beyond one arm’s reach, DR-LfD uses the other arm to move it into their shared workspace before insertion.
+      <div uk-slider>
+        <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-2@m uk-grid">
+          <div>
+            <video width="1280" height="720"
+              data-src="aloha2-vid/unreach1.mp4"
+              data-poster="posters/aloha2-vid/unreach1.jpg"
+              loop
+              muted
+              controls
+              controlsList="nodownload"
+              preload="none"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
+              />
+          </div>
+          <div>
+            <video width="1280" height="720"
+              data-src="aloha2-vid/unreach2.mp4"
+              data-poster="posters/aloha2-vid/unreach2.jpg"
+              loop
+              muted
+              controls
+              controlsList="nodownload"
+              preload="none"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
+              />
+          </div>
+          <div>
+            <video width="1280" height="720"
+              data-src="aloha2-vid/unreach3.mp4"
+              data-poster="posters/aloha2-vid/unreach3.jpg"
+              loop
+              muted
+              controls
+              controlsList="nodownload"
+              preload="none"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
+              />
+          </div>
+        </div>
+        <div class="uk-flex uk-flex-center uk-margin-small">
+          <a class="uk-icon-button" href uk-slidenav-previous uk-slider-item="previous"></a>
+          <a class="uk-icon-button uk-margin-small-left" href uk-slidenav-next uk-slider-item="next"></a>
+        </div>
+      </div>
+
+      ### *Obstructed* Setup
+
+      When a pole blocks the workspace, DR-LfD relocates it to a safe pose before bimanual insertion.
+      <div uk-slider>
+        <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-3@m uk-grid">
+          <div>
+            <video width="640" height="480"
+              data-src="aloha2-vid/unsafe1.mp4"
+              data-poster="posters/aloha2-vid/unsafe1.jpg"
+              loop
+              muted
+              controls
+              controlsList="nodownload"
+              preload="none"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
+              />
+          </div>
+          <div>
+            <video width="640" height="480"
+              data-src="aloha2-vid/unsafe2.mp4"
+              data-poster="posters/aloha2-vid/unsafe2.jpg"
+              loop
+              muted
+              controls
+              controlsList="nodownload"
+              preload="none"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
+              />
+          </div>
+          <div>
+            <video width="640" height="480"
+              data-src="aloha2-vid/unsafe3.mp4"
+              data-poster="posters/aloha2-vid/unsafe3.jpg"
+              loop
+              muted
+              controls
+              controlsList="nodownload"
+              preload="none"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
+              />
+          </div>
+          <div>
+            <video width="640" height="480"
+              data-src="aloha2-vid/unsafe4.mp4"
+              data-poster="posters/aloha2-vid/unsafe4.jpg"
+              loop
+              muted
+              controls
+              controlsList="nodownload"
+              preload="none"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
+              />
+          </div>
+        </div>
+        <div class="uk-flex uk-flex-center uk-margin-small">
+          <a class="uk-icon-button" href uk-slidenav-previous uk-slider-item="previous"></a>
+          <a class="uk-icon-button uk-margin-small-left" href uk-slidenav-next uk-slider-item="next"></a>
+        </div>
+      </div>
+
+  - title: 'Reactive Recovery'
     id: section-5
     text: |
       Contact checks at the end of each skill detect disturbances and trigger local replanning.
@@ -667,7 +651,7 @@ body:
             />
         </div>
         <div>
-          <p class="uk-margin-small-bottom"><strong>Long-horizon composition</strong> — full cup-sponge-screwdriver task, no disturbance (4× speed).</p>
+          <p class="uk-margin-small-bottom"><strong>Cup-sponge-screwdriver</strong> — recovery during the full long-horizon task (4× speed).</p>
           <video width="640" height="480"
             data-src="reactive/longhorizon.mp4"
             data-poster="posters/reactive/longhorizon.jpg"
@@ -682,24 +666,24 @@ body:
         </div>
       </div>
 
-  - title: 'Statistical Results'
+  - title: 'Real-world Results'
     id: section-6
     highlight: |
       <p class="eyebrow">Real-world evaluation / Unseen placements</p>
       <h3 class="results-headline">Higher success across all three OOD tasks.</h3>
       <p class="results-intro">Success rates under OOD position and rotation shifts. ALOHA · 20 trials per task and method.</p>
       <div class="comparison-grid">
-        <article class="comparison-card"><h4>Object handoff</h4><p class="comparison-value">95<span>%</span></p><p class="comparison-gain">+65 pp over the best evaluated baseline</p>
+        <article class="comparison-card"><h4>Object handoff</h4><p class="comparison-value">95<span>%</span></p><p class="comparison-gain">+75 points over π₀.₅</p>
           <div class="comparison-row ours"><span>DR-LfD</span><div class="comparison-track"><div style="width:95%"></div></div><strong>95%</strong></div>
           <div class="comparison-row baseline"><span>DP</span><div class="comparison-track"><div style="width:30%"></div></div><strong>30%</strong></div>
           <div class="comparison-row baseline"><span>π₀.₅</span><div class="comparison-track"><div style="width:20%"></div></div><strong>20%</strong></div>
         </article>
-        <article class="comparison-card"><h4>Screwdriver packing</h4><p class="comparison-value">80<span>%</span></p><p class="comparison-gain">+70 pp over the best evaluated baseline</p>
+        <article class="comparison-card"><h4>Screwdriver packing</h4><p class="comparison-value">80<span>%</span></p><p class="comparison-gain">+70 points over π₀.₅</p>
           <div class="comparison-row ours"><span>DR-LfD</span><div class="comparison-track"><div style="width:80%"></div></div><strong>80%</strong></div>
           <div class="comparison-row baseline"><span>DP</span><div class="comparison-track"><div style="width:10%"></div></div><strong>10%</strong></div>
           <div class="comparison-row baseline"><span>π₀.₅</span><div class="comparison-track"><div style="width:10%"></div></div><strong>10%</strong></div>
         </article>
-        <article class="comparison-card"><h4>Cup-sleeve insertion</h4><p class="comparison-value">75<span>%</span></p><p class="comparison-gain">+40 pp over the best evaluated baseline</p>
+        <article class="comparison-card"><h4>Cup-sleeve insertion</h4><p class="comparison-value">75<span>%</span></p><p class="comparison-gain">+50 points over π₀.₅</p>
           <div class="comparison-row ours"><span>DR-LfD</span><div class="comparison-track"><div style="width:75%"></div></div><strong>75%</strong></div>
           <div class="comparison-row baseline"><span>DP</span><div class="comparison-track"><div style="width:35%"></div></div><strong>35%</strong></div>
           <div class="comparison-row baseline"><span>π₀.₅</span><div class="comparison-track"><div style="width:25%"></div></div><strong>25%</strong></div>
@@ -732,7 +716,7 @@ body:
   - title: 'Simulation Benchmarks (LIBERO & DexMimicGen)'
     id: section-7
     text: |
-      Closed-loop DR-LfD matches or exceeds the evaluated baselines on LIBERO Spatial, Object, and the tested Long tasks, and on DexMimicGen bimanual threading and assembly.
+      On LIBERO, DR-LfD reaches 98% on both the Spatial and Object suites, versus 84% and 78% for Diffusion Policy trained with 50 demos per task. On DexMimicGen bimanual threading and assembly, DR-LfD trained on 100 demos outperforms DP and SDP trained on 1,000.
       <div uk-slider>
         <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-3@m uk-grid">
           <div>
@@ -861,7 +845,7 @@ body:
         </figure>
       </article>
 
-      **Leaky placements.** Support objects tilt the targets: the cup and sleeve along the pitch axis, the screwdriver by approximately 5°, and the tape against a mouse at approximately 30° pitch. These supports are modeled as static background and excluded from the `IsSafePolicy` obstacle check.
+      **Leaky placements.** Support objects tilt the targets: the cup and sleeve along the pitch axis, the screwdriver by approximately 5°, and the tape against a mouse at approximately 30° pitch. These supports are modeled as static background and excluded from the obstacle check.
 
       #### Cup-Sponge-Screwdriver
 
@@ -880,20 +864,3 @@ body:
       **Success criteria.** Success requires all three subtasks: the right gripper passes the cup to the left; the right-held sponge contacts the left-held cup; and the screwdriver is inside the closed box. All objects rest on the table at completion.
 
       </details>
-
-projects: # relevant projects
-  - title: Relevant Project I
-    description: abstract text
-    img: https://getuikit.com/docs/images/light.jpg
-    journal: "ABCD'23"
-    url: https://denkiwakame.github.io/academic-project-template/
-  - title: Relevant Project II
-    description: abstract text
-    img: 001.jpg
-    journal: "EFGH'22"
-    url: https://denkiwakame.github.io/academic-project-template/
-  - title: Relevant Project III
-    description: abstract text
-    img: 002.jpg
-    journal: "IJKL'22"
-    url: https://denkiwakame.github.io/academic-project-template/
