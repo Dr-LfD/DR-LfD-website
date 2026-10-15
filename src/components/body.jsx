@@ -1,35 +1,10 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { marked } from 'marked';
-import markedKatex from 'marked-katex-extension';
-import { markedHighlight } from 'marked-highlight';
-import hljs from 'highlight.js';
-//import 'highlight.js/styles/base16/gruvbox-dark-hard.css';
-// import 'highlight.js/styles/base16/github.css';
-import 'highlight.js/styles/tokyo-night-dark.css';
-// import 'highlight.js/styles/pojoaque.css';
-
-import 'img-comparison-slider';
-
 const renderer = new marked.Renderer();
 renderer.table = (header, body) => {
   return `<div class="uk-overflow-auto uk-width-1-1"><table class="uk-table uk-table-small uk-text-small uk-table-divider"> ${header} ${body} </table></div>`;
 };
-renderer.code = (code, language) => {
-  return `<pre class="hljs"><code class="hljs language-${language}">${code}</code></pre>`;
-};
-
-marked.use(markedKatex({ throwOnError: false }));
-marked.use(
-  markedHighlight({
-    emptyLangClass: 'hljs',
-    langPrefix: 'hljs language-',
-    highlight(code, lang) {
-      const language = hljs.getLanguage(lang) ? lang : 'plaintext';
-      return hljs.highlight(code, { language }).value;
-    },
-  })
-);
 marked.use({ renderer: renderer });
 
 class Content extends React.Component {
@@ -93,7 +68,11 @@ export default class Body extends React.Component {
       (entries) => {
         entries.forEach((entry) => {
           const video = entry.target;
-          // Lazy-load: swap data-src → src the first time the video nears the viewport
+          // Load the poster near the viewport; preload="none" defers video data until play.
+          if (entry.isIntersecting && video.dataset.poster) {
+            video.poster = video.dataset.poster;
+            video.removeAttribute('data-poster');
+          }
           if (entry.isIntersecting && video.dataset.src) {
             video.src = video.dataset.src;
             video.removeAttribute('data-src');
@@ -125,7 +104,7 @@ export default class Body extends React.Component {
       .forEach((slider) => {
         slider.dataset.sliderBound = 'true';
         slider.addEventListener('itemshown', (e) => {
-          const shownItem = e.detail[0];
+          const shownItem = e.target;
           slider.querySelectorAll('video').forEach((video) => {
             if (!shownItem.contains(video) && !video.paused) {
               video.pause();
@@ -153,16 +132,33 @@ export default class Body extends React.Component {
   render() {
     return this.props.body ? (
       <div className="uk-section">
-        {this.props.body.map((subsection, idx) => {
+        {this.props.body.map((subsection) => {
           return (
             <section
               className="project-section"
-              id={`section-${idx + (this.props.idOffset || 0)}`}
-              key={'subsection-' + idx}
+              id={subsection.id}
+              key={subsection.id}
             >
-              <Content title={subsection.title} />
-              <Content image={subsection.image} />
-              <Content text={subsection.text} />
+              <details
+                className="section-disclosure"
+                open
+                onToggle={(event) => {
+                  if (!event.currentTarget.open) {
+                    event.currentTarget
+                      .querySelectorAll('video')
+                      .forEach((video) => {
+                        video.pause();
+                      });
+                  }
+                }}
+              >
+                <summary>
+                  <Content title={subsection.title} />
+                </summary>
+                <Content text={subsection.highlight} />
+                <Content image={subsection.image} />
+                <Content text={subsection.text} />
+              </details>
             </section>
           );
         })}

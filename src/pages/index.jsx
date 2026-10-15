@@ -3,13 +3,11 @@ import { render } from 'react-dom';
 import { Helmet } from 'react-helmet';
 
 import Header from '@/components/header';
+import Navigation from '@/components/navigation';
 import Overview from '@/components/overview';
 import Video from '@/components/video';
 import Body from '@/components/body';
-import Footer from '@/components/footer';
-import Citation from '@/components/citation';
 import SpeakerDeck from '@/components/speakerdeck';
-import Projects from '@/components/projects';
 import data from '../../template.yaml';
 
 import '@/js/styles.js';
@@ -134,14 +132,14 @@ class Template extends React.Component {
             teaser={data.teaser}
             description={data.description}
           />
+        </div>
+        <Navigation items={data.navigation} />
+        <div className="uk-container uk-container-small">
           <SpeakerDeck dataId={data.speakerdeck} />
           <Body body={bodyBeforeVideo} />
           <Video video={data.resources.video} />
-          <Body body={bodyAfterVideo} idOffset={bodyBeforeVideo.length} />
-          {/* <Citation bibtex={data.bibtex} /> */}
-          {/* <Projects projects={data.projects} /> */}
+          <Body body={bodyAfterVideo} />
         </div>
-        {/* <Footer /> */}
       </div>
     );
   }

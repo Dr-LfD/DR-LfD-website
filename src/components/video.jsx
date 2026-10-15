@@ -17,7 +17,9 @@ export default class Video extends React.Component {
         <video
           className="uk-align-center uk-width-1-1"
           data-src={this.props.video}
-          poster={poster}
+          data-poster={poster}
+          width={1280}
+          height={720}
           preload="none"
           controls
           controlsList="nodownload"

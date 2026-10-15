@@ -8,12 +8,29 @@ resources:
   # paper: https://drive.google.com/file/d/1nnW882ct4Hky8AVqaqiqV_urIbZgC_WV/view?usp=sharing
   # arxiv: https://arxiv.org
   code: https://github.com/Dr-LfD/Dr-LfD-dualArm
-  video: 'ppt-pics/sup-vid.mp4'
-description: web page that contains supplementary materials for DR-LfD
+  video: 'ppt-pics/sup-vid-web.mp4'
+description: DR-LfD composes learned manipulation skills with task and motion planning. 95% OOD object handoff success and 21-step skill composition.
 
 image: https://denkiwakame.github.io/academic-project-template/teaser.jpg
 url: https://denkiwakame.github.io/academic-project-template
 speakerdeck: # speakerdeck slide ID
+navigation:
+  - label: Overview
+    target: overview
+  - label: Skill Reuse and Composition
+    target: section-4
+  - label: Method
+    target: section-1
+  - label: Constraint handling
+    target: section-2
+  - label: Spatial generalization
+    target: section-3
+  - label: Online replanning
+    target: section-5
+  - label: Results
+    target: section-6
+  - label: Task Settings
+    target: section-8
 authors:
   - name: Anonymous
     affiliation: [1]
@@ -22,22 +39,164 @@ authors:
 affiliations:
   - Anonymous
 
-teaser: paper-figures/tro-teaser.png
+teaser: paper-figures/tro-teaser.webp
 abstract: |
-  Successfully automating dexterous, long-horizon robotic manipulation requires frameworks capable of both high-level reasoning and fine-grained execution.  Traditional task and motion planning (TAMP), while excellent in symbolic planning, is often brittle in contact-rich operations. Simultaneously, imitation learning (IL), while effective in manipulation tasks with visual feedback, is limited by its low capability in spatial generalization and multi-stage operation.   To reconcile their complementary strengths and limitations, we propose *DR-LfD* (<u>D</u>ecomposed and <u>R</u>eorganized Skills <u>L</u>earned <u>f</u>rom <u>D</u>emonstrations), a framework that seamlessly integrates visuomotor policies into a TAMP-gated decision-making system.  According to contact relationships, DR-LfD  decomposes human demonstrations into atomic skills, which are reproduced as visuomotor policies or object-centric primitives. The initiation, termination, and constraints of the visuomotor policies are carefully modeled and implemented in a TAMP-compatible form, enabling reorganization of skills learned from different sources.  DR-LfD transforms the learning problem from one requiring exponential data to one that scales linearly with the number of distinct skill types, with limited demonstration data for each skill.  Through comprehensive real-world and simulation benchmarking across diverse scenarios, we demonstrate the strong performance of DR-LfD on tasks involving multiple steps, unseen setups, and physical constraints.
-body:
-  - title: 'Key Contributions'
-    text: |
-      > **Core idea:** We learn individual manipulation skills from a small number of demonstrations and reorganize them using a TAMP solver to achieve combinatorial goals.
+  DR-LfD (<u>D</u>ecomposed and <u>R</u>eorganized Skills <u>L</u>earned <u>f</u>rom <u>D</u>emonstrations) combines learned manipulation skills with task and motion planning (TAMP) for long-horizon, contact-rich tasks. Contact changes partition demonstrations into atomic skills, learned as visuomotor policies or object-centric primitives. TAMP-compatible initiation conditions, termination conditions, and physical constraints let the planner compose skills learned from different sources. Demonstration collection scales with the number of distinct skill types, while the planner reuses these skills across task sequences. Real-world and simulation experiments evaluate spatial generalization, long-horizon composition, and physical constraint handling.
 
-      - **TAMP-gated system** — We devise a novel TAMP-gated system that abstracts atomic skills from demonstrations and reorganizes them to achieve combinatorial goals.
-      - **Object-centric primitives** — We leverage equivariant diffusion models to train object-centric primitives, enabling robust spatial generalization from minimal data.
-      - **TAMP-compatible visuomotor policies** — We systematically model the initiation, termination, and constraints of learned visuomotor policies in a form compatible with a sampling-based TAMP framework.
-      - **Comprehensive evaluation** — We demonstrate through comprehensive real-world and simulated experiments that DR-LfD completes long-horizon manipulation tasks under challenging conditions while complying with physical constraints, significantly outperforming state-of-the-art imitation learning methods.
+body:
+  - title: 'Skill Reuse and Composition'
+    id: section-4
+    highlight: |
+      <div class="headline-metrics" aria-label="Key results">
+        <a href="#section-6" class="headline-metric">
+          <span class="metric-context">Unseen placements</span>
+          <strong>
+            95<span>%</span>
+          </strong>
+          <span class="metric-label">Object handoff success</span>
+          <small>OOD · 19/20 trials · DP: 30%</small>
+        </a>
+        <a href="#section-6" class="headline-metric">
+          <span class="metric-context">
+            Stronger spatial generalization
+          </span>
+          <strong>
+            +70<span> pp</span>
+          </strong>
+          <span class="metric-label">Screwdriver packing vs. DP</span>
+          <small>OOD · 80% vs. 10% · 20 trials each</small>
+        </a>
+        <a href="#section-4" class="headline-metric">
+          <span class="metric-context">Long-horizon composition</span>
+          <strong>
+            21<span> steps</span>
+          </strong>
+          <span class="metric-label">One handoff skill, reused</span>
+          <small>Three-Tapes plan skeleton</small>
+        </a>
+      </div>
+    text: |
+      Separately learned skills combine into long-horizon tasks. Each skill can be refined with its own demonstrations and reused in the full task.
+
+
+      <article class="media-card">
+        <div class="media-card__copy">
+          <h3>Skill composition and reusing</h3>
+          <p>Compose skills to solve long-horizon, human-specified tasks.</p>
+        </div>
+        <figure>
+          <video width="1280" height="720" data-src="ppt-pics/3skills_web.mp4" data-poster="posters/ppt-pics/3skills_web.jpg" controls controlsList="nodownload" muted loop playsinline preload="none"></video>
+        </figure>
+      </article>
+
+      Six rollouts under different initial object placements (6× speed).
+      <div uk-slider>
+        <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-3@m uk-grid">
+          <div>
+            <video width="640" height="480"
+              data-src="aloha2-vid/3skills-web1.mp4"
+              data-poster="posters/aloha2-vid/3skills-web1.jpg"
+              loop
+              muted
+              controls
+              controlsList="nodownload"
+              preload="none"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
+              />
+          </div>
+          <div>
+            <video width="640" height="480"
+              data-src="aloha2-vid/3skills-web2.mp4"
+              data-poster="posters/aloha2-vid/3skills-web2.jpg"
+              loop
+              muted
+              controls
+              controlsList="nodownload"
+              preload="none"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
+              />
+          </div>
+          <div>
+            <video width="640" height="480"
+              data-src="aloha2-vid/3skills-web3.mp4"
+              data-poster="posters/aloha2-vid/3skills-web3.jpg"
+              loop
+              muted
+              controls
+              controlsList="nodownload"
+              preload="none"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
+              />
+          </div>
+          <div>
+            <video width="640" height="480"
+              data-src="aloha2-vid/3skills-web4.mp4"
+              data-poster="posters/aloha2-vid/3skills-web4.jpg"
+              loop
+              muted
+              controls
+              controlsList="nodownload"
+              preload="none"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
+              />
+          </div>
+          <div>
+            <video width="640" height="480"
+              data-src="aloha2-vid/3skills-web5.mp4"
+              data-poster="posters/aloha2-vid/3skills-web5.jpg"
+              loop
+              muted
+              controls
+              controlsList="nodownload"
+              preload="none"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
+              />
+          </div>
+          <div>
+            <video width="640" height="480"
+              data-src="aloha2-vid/3skills-web6.mp4"
+              data-poster="posters/aloha2-vid/3skills-web6.jpg"
+              loop
+              muted
+              controls
+              controlsList="nodownload"
+              preload="none"
+              onclick="this.paused ? this.play() : this.pause()"
+              style="cursor: pointer"
+              />
+          </div>
+        </div>
+        <div class="uk-flex uk-flex-center uk-margin-small">
+          <a class="uk-icon-button" href uk-slidenav-previous uk-slider-item="previous"></a>
+          <a class="uk-icon-button uk-margin-small-left" href uk-slidenav-next uk-slider-item="next"></a>
+        </div>
+      </div>
+
+  - title: 'Key Contributions'
+    id: section-0
+    text: |
+      <details>
+      <summary>Core idea and contributions</summary>
+
+      > **Core idea:** DR-LfD learns individual manipulation skills from demonstrations and composes them with TAMP to achieve new task goals.
+
+      - **TAMP-gated system** — Contact changes define atomic skills that TAMP composes into task plans.
+      - **Object-centric primitives** — Equivariant diffusion models learn object-centric primitives that adapt to new object positions and orientations.
+      - **TAMP-compatible visuomotor policies** — Initiation conditions, termination conditions, and physical constraints connect learned policies to sampling-based TAMP.
+      - **Evaluation** — Real-world and simulation experiments test skill composition, spatial generalization, and physical constraint handling against imitation learning baselines.
+
+      </details>
 
   - title: 'How It Works'
+    id: section-1
     text: |
-      ### Pipeline
+      <details>
+      <summary><strong>Method pipeline and implementation details</strong></summary>
 
       <div class="method-pipeline" aria-label="DR-LfD method pipeline">
         <div><strong>1</strong><span>Demonstrate</span></div>
@@ -47,27 +206,41 @@ body:
         <div><strong>5</strong><span>Execute &amp;<br>verify</span></div>
       </div>
 
-      1. **Demonstrate** — Record about 20 teleoperated examples of each short skill. Full task sequences are not required.
-      2. **Decompose** — A VLM finds changes in robot–object and object–object contact. Each segment becomes an atomic skill with clear start and end conditions.
+      1. **Demonstrate** — Record about 20 teleoperated demonstrations per short skill.
+      <article class="media-card">
+        <div class="media-card__copy">
+          <h3>2. Decompose by contact</h3>
+          <p>A VLM identifies robot–object and object–object contact changes. These changes define atomic skills and their start and end conditions.</p>
+        </div>
+        <figure>
+          <img src="paper-figures/vlm-grounding.png" alt="VLM-based contact relationship grounding for demonstration decomposition" loading="lazy" />
+        </figure>
+      </article>
 
+      <article class="media-card">
+        <div class="media-card__copy">
+          <h3>3. Learn each skill</h3>
+          <p>Train object-centric primitives for pick-and-place actions and visuomotor policies for contact-rich actions. Use standard TAMP motion skills for free-space moves.</p>
+        </div>
+        <figure>
+          <img src="paper-figures/skillequivNet.png" alt="SO(3)-equivariant object-centric skill network" loading="lazy" />
+        </figure>
+      </article>
 
-      <img src="paper-figures/vlm-grounding.png" alt="VLM-based contact relationship grounding for demonstration decomposition" loading="lazy" style="max-width:50%;" />
+      4. **Plan a new task** — TAMP selects and orders the learned skills, adding regrasping or obstacle removal to satisfy safety and reachability constraints.
+      5. **Execute and verify** — The robot perceives, plans, executes, and verifies each step. Failed steps trigger local replanning.
 
-      3. **Learn each skill** — Train object-centric primitives for pick-and-place actions and visuomotor policies for contact-rich actions. Use standard TAMP motion skills for free-space moves.
+      </details>
 
+      <details>
+      <summary>System capabilities</summary>
 
-      <img src="paper-figures/skillequivNet.png" alt="SO(3)-equivariant object-centric skill network" loading="lazy"  style="max-width:80%;" />
-
-      4. **Plan a new task** — The task-and-motion planner (TAMP) selects and orders the learned skills. Safety and reachability constraints let it add regrasping or obstacle-removal steps when needed.
-      5. **Execute and verify** — The robot perceives, plans, acts, and checks the result of each step. It replans locally if a step fails.
-
-      ### System Advantages
 
       <div class="system-advantages" aria-label="DR-LfD system advantages">
         <a class="system-advantage-link" href="#section-4">
           <article class="uk-card uk-card-default uk-card-body system-advantage">
             <h4>Heterogeneous Skill Composition</h4>
-            <p>The planner temporally composes visuomotor policies, object-centric primitives, and predefined motion skills. Contact conditions make each skill transition explicit and interpretable.</p>
+            <p>The planner sequences visuomotor policies, object-centric primitives, and predefined motion skills. Contact conditions define the transitions between skills.</p>
           </article>
         </a>
         <a class="system-advantage-link" href="#section-3">
@@ -79,32 +252,41 @@ body:
         <a class="system-advantage-link" href="#section-2">
           <article class="uk-card uk-card-default uk-card-body system-advantage">
             <h4>Physical Constraint Handling</h4>
-            <p>Unlike prior visuomotor policies, DR-LfD exposes policy safety and reachability constraints to the planner. It can test whether a policy is feasible and insert corrective steps when needed.</p>
+            <p>DR-LfD exposes policy safety and reachability constraints to the planner, which checks feasibility and inserts corrective actions.</p>
           </article>
         </a>
         <a class="system-advantage-link" href="#section-5">
           <article class="uk-card uk-card-default uk-card-body system-advantage">
             <h4>Dual-Arm Online Replanning</h4>
-            <p>The system tracks dual-arm contact progress, re-perceives and verifies each skill outcome, and locally replans when the observed state differs from the expected state.</p>
+            <p>The system tracks contacts across both arms and verifies each skill outcome. A mismatch between observed and expected states triggers local replanning.</p>
           </article>
         </a>
       </div>
 
-  - title: 'Constraint Handling: Reachability & Safety'
-    text: |
-      When physical constraints are violated, pure imitation learning baselines (ACT, DP) **score 0%** — they have no mechanism to adapt. DR-LfD uses reachability maps and Minimum-Distance-Field safety checks as TAMP-compatible predicates, enabling automatic insertion of corrective actions into the plan.
+      </details>
 
-      <img src="paper-figures/tro-unsafe-unreachable.png" alt="Examples of unreachable and unsafe setups handled through planning" loading="lazy" />
+  - title: 'Constraint Handling: Reachability & Safety'
+    id: section-2
+    text: |
+      <article class="media-card">
+        <div class="media-card__copy">
+          <h3>Reachability and safety</h3>
+          <p>Reachability maps and minimum-distance-field safety checks guide TAMP to insert corrective actions. ACT and DP score 0% in the constrained simulation setups.</p>
+        </div>
+        <figure>
+          <img src="paper-figures/tro-unsafe-unreachable.png" alt="Examples of unreachable and unsafe setups handled through planning" loading="lazy" />
+        </figure>
+      </article>
 
       ### *Unreachable* Setup
 
-      When the object falls outside one arm's reachability map, DR-LfD plans to use the other arm to transport it to a commonly-reachable position before performing insertion.
+      When an object lies beyond one arm’s reach, DR-LfD uses the other arm to move it into their shared workspace before insertion.
       <div uk-slider>
         <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-2@m uk-grid">
           <div>
-            <video
+            <video width="1280" height="720"
               data-src="aloha2-vid/unreach1.mp4"
-              poster="posters/aloha2-vid/unreach1.jpg"
+              data-poster="posters/aloha2-vid/unreach1.jpg"
               loop
               muted
               controls
@@ -115,9 +297,9 @@ body:
               />
           </div>
           <div>
-            <video
+            <video width="1280" height="720"
               data-src="aloha2-vid/unreach2.mp4"
-              poster="posters/aloha2-vid/unreach2.jpg"
+              data-poster="posters/aloha2-vid/unreach2.jpg"
               loop
               muted
               controls
@@ -128,9 +310,9 @@ body:
               />
           </div>
           <div>
-            <video
+            <video width="1280" height="720"
               data-src="aloha2-vid/unreach3.mp4"
-              poster="posters/aloha2-vid/unreach3.jpg"
+              data-poster="posters/aloha2-vid/unreach3.jpg"
               loop
               muted
               controls
@@ -149,13 +331,13 @@ body:
 
       ### *Unsafe* Setup
 
-      When a pole obstacle blocks the required workspace, DR-LfD plans obstacle-removal actions (relocate the pole to a safe pose) before performing bimanual insertion.
+      When a pole blocks the workspace, DR-LfD relocates it to a safe pose before bimanual insertion.
       <div uk-slider>
         <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-3@m uk-grid">
           <div>
-            <video
+            <video width="640" height="480"
               data-src="aloha2-vid/unsafe1.mp4"
-              poster="posters/aloha2-vid/unsafe1.jpg"
+              data-poster="posters/aloha2-vid/unsafe1.jpg"
               loop
               muted
               controls
@@ -166,9 +348,9 @@ body:
               />
           </div>
           <div>
-            <video
+            <video width="640" height="480"
               data-src="aloha2-vid/unsafe2.mp4"
-              poster="posters/aloha2-vid/unsafe2.jpg"
+              data-poster="posters/aloha2-vid/unsafe2.jpg"
               loop
               muted
               controls
@@ -179,9 +361,9 @@ body:
               />
           </div>
           <div>
-            <video
+            <video width="640" height="480"
               data-src="aloha2-vid/unsafe3.mp4"
-              poster="posters/aloha2-vid/unsafe3.jpg"
+              data-poster="posters/aloha2-vid/unsafe3.jpg"
               loop
               muted
               controls
@@ -192,9 +374,9 @@ body:
               />
           </div>
           <div>
-            <video
+            <video width="640" height="480"
               data-src="aloha2-vid/unsafe4.mp4"
-              poster="posters/aloha2-vid/unsafe4.jpg"
+              data-poster="posters/aloha2-vid/unsafe4.jpg"
               loop
               muted
               controls
@@ -212,16 +394,28 @@ body:
       </div>
 
   - title: 'Spatial Generalization: Unseen Setups'
+    id: section-3
     text: |
-      DR-LfD uses SO(3)-equivariant diffusion primitives trained on ≈20 demonstrations to generalize to novel object positions and orientations at test time.
+      <div class="video-comparison" aria-label="Object handoff examples in OOD and Leaky settings">
+        <figure>
+          <figcaption><h3>Diffusion Policy</h3><p>OOD setting · <strong>Failure</strong> · 4× speed</p></figcaption>
+          <video width="640" height="480" data-playback-rate="4" data-src="comparison/dp-ood-failure.mp4" data-poster="comparison/dp-ood-failure.jpg" controls muted playsinline loop preload="none" aria-label="Diffusion Policy failure in the OOD setting"></video>
+        </figure>
+        <figure>
+          <figcaption><h3>DR-LfD</h3><p>Leaky setting · <strong>Success</strong> · 4× speed</p></figcaption>
+          <video width="640" height="480" data-playback-rate="4" data-src="comparison/dr-lfd-leaky-success.mp4" data-poster="comparison/dr-lfd-leaky-success.jpg" controls muted playsinline loop preload="none" aria-label="DR-LfD success in the Leaky setting"></video>
+        </figure>
+      </div>
+
+      SO(3)-equivariant diffusion primitives trained on ≈20 demonstrations adapt to new object positions and orientations.
 
       **Object Handoff** — transferring a tape roll from right arm to left arm across varied initial placements (OOD condition, 4× speed).
       <div uk-slider>
         <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-3@m uk-grid">
           <div>
-            <video
+            <video width="640" height="480"
               data-src="tape_leaky/tape1.mp4"
-              poster="posters/tape_leaky/tape1.jpg"
+              data-poster="posters/tape_leaky/tape1.jpg"
               loop
               muted
               controls
@@ -232,9 +426,9 @@ body:
               />
           </div>
           <div>
-            <video
+            <video width="640" height="480"
               data-src="tape_leaky/tape2.mp4"
-              poster="posters/tape_leaky/tape2.jpg"
+              data-poster="posters/tape_leaky/tape2.jpg"
               loop
               muted
               controls
@@ -245,9 +439,9 @@ body:
               />
           </div>
           <div>
-            <video
+            <video width="640" height="480"
               data-src="tape_leaky/tape3.mp4"
-              poster="posters/tape_leaky/tape3.jpg"
+              data-poster="posters/tape_leaky/tape3.jpg"
               loop
               muted
               controls
@@ -258,9 +452,9 @@ body:
               />
           </div>
           <div>
-            <video
+            <video width="640" height="480"
               data-src="tape_leaky/tape4.mp4"
-              poster="posters/tape_leaky/tape4.jpg"
+              data-poster="posters/tape_leaky/tape4.jpg"
               loop
               muted
               controls
@@ -281,9 +475,9 @@ body:
       <div uk-slider>
         <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-3@m uk-grid">
           <div>
-            <video
+            <video width="640" height="480"
               data-src="screw_leaky/screw_1.mp4"
-              poster="posters/screw_leaky/screw_1.jpg"
+              data-poster="posters/screw_leaky/screw_1.jpg"
               loop
               muted
               controls
@@ -294,9 +488,9 @@ body:
               />
           </div>
           <div>
-            <video
+            <video width="640" height="480"
               data-src="screw_leaky/screw_2.mp4"
-              poster="posters/screw_leaky/screw_2.jpg"
+              data-poster="posters/screw_leaky/screw_2.jpg"
               loop
               muted
               controls
@@ -307,9 +501,9 @@ body:
               />
           </div>
           <div>
-            <video
+            <video width="640" height="480"
               data-src="screw_leaky/screw_3.mp4"
-              poster="posters/screw_leaky/screw_3.jpg"
+              data-poster="posters/screw_leaky/screw_3.jpg"
               loop
               muted
               controls
@@ -320,9 +514,9 @@ body:
               />
           </div>
           <div>
-            <video
+            <video width="640" height="480"
               data-src="screw_leaky/screw_4.mp4"
-              poster="posters/screw_leaky/screw_4.jpg"
+              data-poster="posters/screw_leaky/screw_4.jpg"
               loop
               muted
               controls
@@ -343,9 +537,9 @@ body:
       <div uk-slider>
         <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-2@m uk-grid">
           <div>
-            <video
+            <video width="1280" height="720"
               data-src="franka_screw/screw1.mp4"
-              poster="posters/franka_screw/screw1.jpg"
+              data-poster="posters/franka_screw/screw1.jpg"
               loop
               muted
               controls
@@ -356,9 +550,9 @@ body:
               />
           </div>
           <div>
-            <video
+            <video width="1280" height="720"
               data-src="franka_screw/screw2.mp4"
-              poster="posters/franka_screw/screw2.jpg"
+              data-poster="posters/franka_screw/screw2.jpg"
               loop
               muted
               controls
@@ -369,9 +563,9 @@ body:
               />
           </div>
           <div>
-            <video
+            <video width="1280" height="720"
               data-src="franka_screw/screw3.mp4"
-              poster="posters/franka_screw/screw3.jpg"
+              data-poster="posters/franka_screw/screw3.jpg"
               loop
               muted
               controls
@@ -382,9 +576,9 @@ body:
               />
           </div>
           <div>
-            <video
+            <video width="1280" height="720"
               data-src="franka_screw/screw4.mp4"
-              poster="posters/franka_screw/screw4.jpg"
+              data-poster="posters/franka_screw/screw4.jpg"
               loop
               muted
               controls
@@ -395,9 +589,9 @@ body:
               />
           </div>
           <div>
-            <video
+            <video width="1280" height="720"
               data-src="franka_screw/screw5.mp4"
-              poster="posters/franka_screw/screw5.jpg"
+              data-poster="posters/franka_screw/screw5.jpg"
               loop
               muted
               controls
@@ -414,160 +608,27 @@ body:
         </div>
       </div>
 
-      <div class="uk-grid-small uk-child-width-1-1@s uk-child-width-1-2@m" uk-grid>
-        <div>
-          <video
-            data-src="ppt-pics/throw_screw_web.mp4"
-            poster="posters/ppt-pics/throw_screw_web.jpg"
-            loop
-            muted
-            preload="none"
-            onclick="this.paused ? this.play() : this.pause()"
-            style="cursor: pointer"
-            />
-        </div>
-        <div>
+      <article class="media-card">
+        <div class="media-card__copy">
           <h3>Randomization via Tossing</h3>
-          <p>The equivariant primitive adapts to unseen object placements introduced by tossing — poses that the teleoperation hardware cannot even demonstrate directly.</p>
+          <p>The equivariant primitive adapts to new object positions and orientations introduced by tossing.</p>
         </div>
-      </div>
-
-  - title: 'Composing Skills for Novel Long-Horizon Tasks'
-    text: |
-      A compact repertoire of separately-learned skill types recombines to cover tasks far longer than any individual demonstration. Skills can be improved in isolation — replacing a weak sub-skill does not require re-collecting the full task sequence.
-
-      **Three-Tapes** — a single handoff skill, repeated by TAMP to fill a basket with three tape rolls (21-step plan skeleton, 6× speed).
-      <div class="uk-grid-small uk-child-width-1-1@s" uk-grid>
-        <div class="uk-width-1-1@m">
-          <video
-            data-src="ppt-pics/3tape_web.mp4"
-            poster="posters/ppt-pics/3tape_web.jpg"
-            loop
-            muted
-            controls
-              controlsList="nodownload"
-              preload="none"
-            onclick="this.paused ? this.play() : this.pause()"
-            style="cursor: pointer"
-            />
-        </div>
-      </div>
-
-      **Cup-Sponge-Screwdriver** — three distinct bimanual skills composed into a 19-step plan skeleton (6× speed).
-      <div class="uk-grid-small uk-child-width-1-1@s" uk-grid>
-        <div>
-          <video
-            data-src="ppt-pics/3skills_web.mp4"
-            poster="posters/ppt-pics/3skills_web.jpg"
-            loop
-            muted
-            controls
-              controlsList="nodownload"
-              preload="none"
-            onclick="this.paused ? this.play() : this.pause()"
-            style="cursor: pointer"
-            />
-        </div>
-      </div>
-
-      Six rollouts under different initial object placements (6× speed).
-      <div uk-slider>
-        <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-3@m uk-grid">
-          <div>
-            <video
-              data-src="aloha2-vid/3skills-web1.mp4"
-              poster="posters/aloha2-vid/3skills-web1.jpg"
-              loop
-              muted
-              controls
-              controlsList="nodownload"
-              preload="none"
-              onclick="this.paused ? this.play() : this.pause()"
-              style="cursor: pointer"
-              />
-          </div>
-          <div>
-            <video
-              data-src="aloha2-vid/3skills-web2.mp4"
-              poster="posters/aloha2-vid/3skills-web2.jpg"
-              loop
-              muted
-              controls
-              controlsList="nodownload"
-              preload="none"
-              onclick="this.paused ? this.play() : this.pause()"
-              style="cursor: pointer"
-              />
-          </div>
-          <div>
-            <video
-              data-src="aloha2-vid/3skills-web3.mp4"
-              poster="posters/aloha2-vid/3skills-web3.jpg"
-              loop
-              muted
-              controls
-              controlsList="nodownload"
-              preload="none"
-              onclick="this.paused ? this.play() : this.pause()"
-              style="cursor: pointer"
-              />
-          </div>
-          <div>
-            <video
-              data-src="aloha2-vid/3skills-web4.mp4"
-              poster="posters/aloha2-vid/3skills-web4.jpg"
-              loop
-              muted
-              controls
-              controlsList="nodownload"
-              preload="none"
-              onclick="this.paused ? this.play() : this.pause()"
-              style="cursor: pointer"
-              />
-          </div>
-          <div>
-            <video
-              data-src="aloha2-vid/3skills-web5.mp4"
-              poster="posters/aloha2-vid/3skills-web5.jpg"
-              loop
-              muted
-              controls
-              controlsList="nodownload"
-              preload="none"
-              onclick="this.paused ? this.play() : this.pause()"
-              style="cursor: pointer"
-              />
-          </div>
-          <div>
-            <video
-              data-src="aloha2-vid/3skills-web6.mp4"
-              poster="posters/aloha2-vid/3skills-web6.jpg"
-              loop
-              muted
-              controls
-              controlsList="nodownload"
-              preload="none"
-              onclick="this.paused ? this.play() : this.pause()"
-              style="cursor: pointer"
-              />
-          </div>
-        </div>
-        <div class="uk-flex uk-flex-center uk-margin-small">
-          <a class="uk-icon-button" href uk-slidenav-previous uk-slider-item="previous"></a>
-          <a class="uk-icon-button uk-margin-small-left" href uk-slidenav-next uk-slider-item="next"></a>
-        </div>
-      </div>
+        <figure>
+          <video width="1280" height="720" data-src="ppt-pics/throw_screw_web.mp4" data-poster="posters/ppt-pics/throw_screw_web.jpg" controls controlsList="nodownload" muted loop playsinline preload="none"></video>
+        </figure>
+      </article>
 
   - title: 'Reactive Recovery from External Disturbance'
+    id: section-5
     text: |
-      A contact monitor at the end of each skill catches disturbances and triggers local replanning to recover.
+      Contact checks at the end of each skill detect disturbances and trigger local replanning.
 
       <div class="uk-grid-small uk-child-width-1-2@m" uk-grid>
         <div>
           <p class="uk-margin-small-bottom"><strong>Object handoff</strong> — cup pulled away mid-reach (2× speed).</p>
-          <video
+          <video width="640" height="480"
             data-src="reactive/handoff.mp4"
-            poster="posters/reactive/handoff.jpg"
+            data-poster="posters/reactive/handoff.jpg"
             loop
             muted
             controls
@@ -579,9 +640,9 @@ body:
         </div>
         <div>
           <p class="uk-margin-small-bottom"><strong>Screwdriver packing</strong> — screwdriver taken away (2× speed).</p>
-          <video
+          <video width="640" height="480"
             data-src="reactive/screwdriver.mp4"
-            poster="posters/reactive/screwdriver.jpg"
+            data-poster="posters/reactive/screwdriver.jpg"
             loop
             muted
             controls
@@ -593,9 +654,9 @@ body:
         </div>
         <div>
           <p class="uk-margin-small-bottom"><strong>Cup wiping</strong> — cup relocated before wiping.</p>
-          <video
+          <video width="640" height="480"
             data-src="reactive/cupwipe.mp4"
-            poster="posters/reactive/cupwipe.jpg"
+            data-poster="posters/reactive/cupwipe.jpg"
             loop
             muted
             controls
@@ -607,9 +668,9 @@ body:
         </div>
         <div>
           <p class="uk-margin-small-bottom"><strong>Long-horizon composition</strong> — full cup-sponge-screwdriver task, no disturbance (4× speed).</p>
-          <video
+          <video width="640" height="480"
             data-src="reactive/longhorizon.mp4"
-            poster="posters/reactive/longhorizon.jpg"
+            data-poster="posters/reactive/longhorizon.jpg"
             loop
             muted
             controls
@@ -622,7 +683,32 @@ body:
       </div>
 
   - title: 'Statistical Results'
+    id: section-6
+    highlight: |
+      <p class="eyebrow">Real-world evaluation / Unseen placements</p>
+      <h3 class="results-headline">Higher success across all three OOD tasks.</h3>
+      <p class="results-intro">Success rates under OOD position and rotation shifts. ALOHA · 20 trials per task and method.</p>
+      <div class="comparison-grid">
+        <article class="comparison-card"><h4>Object handoff</h4><p class="comparison-value">95<span>%</span></p><p class="comparison-gain">+65 pp over the best evaluated baseline</p>
+          <div class="comparison-row ours"><span>DR-LfD</span><div class="comparison-track"><div style="width:95%"></div></div><strong>95%</strong></div>
+          <div class="comparison-row baseline"><span>DP</span><div class="comparison-track"><div style="width:30%"></div></div><strong>30%</strong></div>
+          <div class="comparison-row baseline"><span>π₀.₅</span><div class="comparison-track"><div style="width:20%"></div></div><strong>20%</strong></div>
+        </article>
+        <article class="comparison-card"><h4>Screwdriver packing</h4><p class="comparison-value">80<span>%</span></p><p class="comparison-gain">+70 pp over the best evaluated baseline</p>
+          <div class="comparison-row ours"><span>DR-LfD</span><div class="comparison-track"><div style="width:80%"></div></div><strong>80%</strong></div>
+          <div class="comparison-row baseline"><span>DP</span><div class="comparison-track"><div style="width:10%"></div></div><strong>10%</strong></div>
+          <div class="comparison-row baseline"><span>π₀.₅</span><div class="comparison-track"><div style="width:10%"></div></div><strong>10%</strong></div>
+        </article>
+        <article class="comparison-card"><h4>Cup-sleeve insertion</h4><p class="comparison-value">75<span>%</span></p><p class="comparison-gain">+40 pp over the best evaluated baseline</p>
+          <div class="comparison-row ours"><span>DR-LfD</span><div class="comparison-track"><div style="width:75%"></div></div><strong>75%</strong></div>
+          <div class="comparison-row baseline"><span>DP</span><div class="comparison-track"><div style="width:35%"></div></div><strong>35%</strong></div>
+          <div class="comparison-row baseline"><span>π₀.₅</span><div class="comparison-track"><div style="width:25%"></div></div><strong>25%</strong></div>
+        </article>
+      </div>
     text: |
+      <details>
+      <summary>Full results, evaluation protocol, and limitations</summary>
+
       #### Spatial Generalization — Real World (n = 20 per setup)
 
       Three tasks on ALOHA hardware. **ID**: in-distribution placements. **OOD**: position/rotation shift. **Leaky**: target object rotated and leaning against a distractor.
@@ -639,17 +725,20 @@ body:
       | | OOD | 35% | 25% | **75%** |
       | | Leaky | 35% | 35% | **40%** |
 
-      DR-LfD consistently dominates under OOD placement shifts, including outperforming the large pretrained π₀.₅ model. Under the Leaky condition, Screwdriver Packing shows π₀.₅ ahead (75% vs 65%), and Cup-sleeve Leaky is low for all methods — a conjunctive effect of fine-grained insertion requirements and noisy single-view depth sensing.
+      DR-LfD achieves the highest success rate on all three OOD tasks. In the Leaky setting, π₀.₅ leads on Screwdriver Packing (75% vs 65%). Cup-sleeve Insertion remains difficult for all methods; fine insertion and noisy single-view depth sensing contribute to failures.
+
+      </details>
 
   - title: 'Simulation Benchmarks (LIBERO & DexMimicGen)'
+    id: section-7
     text: |
-      DR-LfD (Closed-loop) matches or outperforms all baselines across LIBERO Spatial, Object, and Long subsets, and across DexMimicGen bimanual threading and assembly tasks.
+      Closed-loop DR-LfD matches or exceeds the evaluated baselines on LIBERO Spatial, Object, and the tested Long tasks, and on DexMimicGen bimanual threading and assembly.
       <div uk-slider>
         <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-3@m uk-grid">
           <div>
-            <video
+            <video width="1152" height="720"
               data-src="libero_dmg/spatial1.mp4"
-              poster="posters/libero_dmg/spatial1.jpg"
+              data-poster="posters/libero_dmg/spatial1.jpg"
               loop
               muted
               controls
@@ -660,9 +749,9 @@ body:
               />
           </div>
           <div>
-            <video
+            <video width="1152" height="720"
               data-src="libero_dmg/obj1.mp4"
-              poster="posters/libero_dmg/obj1.jpg"
+              data-poster="posters/libero_dmg/obj1.jpg"
               loop
               muted
               controls
@@ -673,9 +762,9 @@ body:
               />
           </div>
           <div>
-            <video
+            <video width="1152" height="720"
               data-src="libero_dmg/living_retry.mp4"
-              poster="posters/libero_dmg/living_retry.jpg"
+              data-poster="posters/libero_dmg/living_retry.jpg"
               loop
               muted
               controls
@@ -686,9 +775,9 @@ body:
               />
           </div>
           <div>
-            <video
+            <video width="1152" height="720"
               data-src="libero_dmg/kitchen_compressed.mp4"
-              poster="posters/libero_dmg/kitchen_compressed.jpg"
+              data-poster="posters/libero_dmg/kitchen_compressed.jpg"
               loop
               muted
               controls
@@ -699,9 +788,9 @@ body:
               />
           </div>
           <div>
-            <video
+            <video width="1152" height="720"
               data-src="libero_dmg/study_compressed.mp4"
-              poster="posters/libero_dmg/study_compressed.jpg"
+              data-poster="posters/libero_dmg/study_compressed.jpg"
               loop
               muted
               controls
@@ -712,9 +801,9 @@ body:
               />
           </div>
           <div>
-            <video
+            <video width="384" height="128"
               data-src="libero_dmg/threading.mp4"
-              poster="posters/libero_dmg/threading.jpg"
+              data-poster="posters/libero_dmg/threading.jpg"
               loop
               muted
               controls
@@ -725,9 +814,9 @@ body:
               />
           </div>
           <div>
-            <video
+            <video width="384" height="128"
               data-src="libero_dmg/assemble.mp4"
-              poster="posters/libero_dmg/assemble.jpg"
+              data-poster="posters/libero_dmg/assemble.jpg"
               loop
               muted
               controls
@@ -743,6 +832,54 @@ body:
           <a class="uk-icon-button uk-margin-small-left" href uk-slidenav-next uk-slider-item="next"></a>
         </div>
       </div>
+
+  - title: 'Real-world Task Settings'
+    id: section-8
+    text: |
+      <details>
+      <summary><strong>Hardware, task procedures, placements, and success criteria</strong></summary>
+
+      #### Hardware setup
+
+      Real-world comparisons use ALOHA with an overhead Intel RealSense D435i RGB-D camera for 3D perception.
+
+      #### Comparative tasks
+
+      **Cup-sleeve Insertion.** The left arm grasps the sleeve and the right arm grasps the cup. The arms align the objects and insert the cup fully into the sleeve to complete the task.
+
+      **Screwdriver Packing.** The left gripper places the screwdriver into its target pose inside the box. The right gripper closes the lid, and both grippers press it shut. Success requires the screwdriver inside the box and the lid fully closed.
+
+      **Object Handoff.** The right gripper picks up the tape and passes it to the left gripper, which then places it down. Success is recorded when the left gripper firmly grasps the tape.
+
+      <article class="media-card">
+        <div class="media-card__copy">
+          <h3>Initial Object Placements</h3>
+          <p>Top: the sleeve starts in the left blue region and the cup in the right green region; both regions are enlarged in OOD. Middle: the screwdriver center starts in the purple region with heading selected from {−10°, 0°, 10°}; OOD enlarges the region to cover most of the left half of the table and randomizes the heading continuously. Bottom: the tape starts on the right side of the table; OOD enlarges its placement region.</p>
+        </div>
+        <figure>
+          <img src="paper-figures/real-world-exp-setting.png" alt="Initial placements for cup-sleeve insertion, screwdriver packing, and object handoff under ID, OOD, and Leaky settings." loading="lazy" />
+        </figure>
+      </article>
+
+      **Leaky placements.** Support objects tilt the targets: the cup and sleeve along the pitch axis, the screwdriver by approximately 5°, and the tape against a mouse at approximately 30° pitch. These supports are modeled as static background and excluded from the `IsSafePolicy` obstacle check.
+
+      #### Cup-Sponge-Screwdriver
+
+      Four demonstration sets train the component skills: screwdriver packing (a₁), cup handoff (a₂), and cup wiping (a₃), each with all objects in the scene; and a second screwdriver-packing set with the sponge and cup removed.
+
+      <article class="media-card">
+        <div class="media-card__copy">
+          <h3>Training and Deployment</h3>
+          <p>Panels (a)–(c): during data collection, task objects occupy small regions with fixed orientations—the screwdriver for a₁, the cup for a₂, and the cup and sponge for a₃. Panel (d): deployment composes the three skills in one scene. The screwdriver starts randomly within the large purple region, with heading sampled from (−90°, 90°). The cup and sponge start randomly within the large yellow region, with headings sampled from (−45°, 45°).</p>
+        </div>
+        <figure>
+          <img src="paper-figures/tro-3skills-init-1col.png" alt="Demonstration placements for three skills and deployment placements for their combined task." loading="lazy" />
+        </figure>
+      </article>
+
+      **Success criteria.** Success requires all three subtasks: the right gripper passes the cup to the left; the right-held sponge contacts the left-held cup; and the screwdriver is inside the closed box. All objects rest on the table at completion.
+
+      </details>
 
 projects: # relevant projects
   - title: Relevant Project I
