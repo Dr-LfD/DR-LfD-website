@@ -2,14 +2,14 @@ theme: default # default || classic || dark
 # organization: Pixel Genius Labs
 # twitter: '@denkivvakame'
 title: 'Decompose and Reorganize: Planning with Primitives and Visuomotor Policies Learned from Demonstrations'
-tabTitle: 'DR-LfD' # Short title for browser tab
+tabTitle: 'DR-LfD: Learned Skills + TAMP for Long-Horizon Bimanual Manipulation'
 # journal: 'In revision, IEEE T-RO'
 resources:
   # paper: https://drive.google.com/file/d/1nnW882ct4Hky8AVqaqiqV_urIbZgC_WV/view?usp=sharing
   # arxiv: https://arxiv.org
   code: https://github.com/Dr-LfD/Dr-LfD-dualArm
-  video: 'ppt-pics/sup-vid-web.mp4'
-description: DR-LfD composes learned manipulation skills with task and motion planning. Skills trained from 20 demos each are reused across tasks, outperform π₀.₅ on unseen placements, and respect reachability and obstacle constraints.
+  video: 'ppt-pics/sup-vid-narrated.mp4'
+description: 'DR-LfD decomposes demonstrations into reusable skills and composes them with task and motion planning. Under unseen object placements in three real-world tasks, it succeeds in 83% of trials, compared with 18% for π₀.₅.'
 
 image: https://dr-lfd.github.io/DR-LfD-website/paper-figures/tro-teaser.png
 url: https://dr-lfd.github.io/DR-LfD-website
@@ -17,6 +17,8 @@ speakerdeck: # speakerdeck slide ID
 navigation:
   - label: Overview
     target: overview
+  - label: Real-world Task Settings
+    target: section-8
   - label: Skill Reuse and Composition
     target: section-4
   - label: How It Works
@@ -31,8 +33,6 @@ navigation:
     target: section-6
   - label: Simulation Benchmarks
     target: section-7
-  - label: Real-world Task Settings
-    target: section-8
 authors:
   - name: Anonymous
     affiliation: [1]
@@ -41,7 +41,7 @@ affiliations:
 
 teaser: paper-figures/tro-teaser.webp
 abstract: |
-  DR-LfD (<u>D</u>ecompose and <u>R</u>eorganize Skills <u>L</u>earned <u>f</u>rom <u>D</u>emonstrations) combines learned manipulation skills with task and motion planning (TAMP) for long-horizon, contact-rich tasks. Contact changes partition demonstrations into atomic skills, learned as visuomotor policies or object-centric primitives. TAMP-compatible initiation conditions, termination conditions, and physical constraints let the planner compose skills learned from different sources. Demonstration collection scales with the number of distinct skill types, while the planner reuses these skills across task sequences. Real-world and simulation experiments evaluate spatial generalization, long-horizon composition, and physical constraint handling.
+  Successfully automating dexterous, long-horizon bimanual manipulation requires frameworks capable of both high-level reasoning and fine-grained execution. Traditional task and motion planning (TAMP), while excellent at symbolic planning, is often brittle in contact-rich operations. Simultaneously, imitation learning (IL), while effective in manipulation tasks with visual feedback, is limited by its low capability in spatial generalization and multi-stage operation. To reconcile their complementary strengths and limitations, we propose DR-LfD (<u>D</u>ecomposed and <u>R</u>eorganized Skills <u>L</u>earned <u>f</u>rom <u>D</u>emonstrations), a framework that integrates visuomotor policies into a TAMP-gated decision-making system. Based on contact relationships, DR-LfD decomposes human demonstrations into atomic skills, which are reproduced as visuomotor policies or object-centric primitives. The initiation, termination, and constraints of the visuomotor policies are carefully modeled and implemented in a TAMP-compatible form, enabling reorganization of skills learned from different sources. DR-LfD transforms the learning problem from one requiring exponential demonstration data over possible skill sequences to one whose demonstration burden scales with the number of distinct skill types, with limited data for each skill. Real-world and simulation benchmarks demonstrate data-efficient skill composition under unseen setups and physical constraints. On two DexMimicGen tasks, DR-LfD with 100 demonstrations outperforms diffusion-based imitation policies with 1000.
 
 body:
   - title: 'Highlights'
@@ -54,7 +54,7 @@ body:
         </a>
         <a href="#section-6" class="headline-metric">
           <strong>Spatial generalization</strong>
-          <span class="metric-label">83% vs. 18% for π₀.₅ on unseen placements</span>
+          <span class="metric-label">83% vs. 18% for π₀.₅, averaged over three real-world OOD tasks</span>
         </a>
         <a href="#section-2" class="headline-metric">
           <strong>Constraint aware</strong>
@@ -62,16 +62,70 @@ body:
         </a>
       </div>
 
+  - title: 'Real-world Task Settings'
+    id: section-8
+    text: |
+      <details>
+      <summary><strong>Tasks and initial placements</strong></summary>
+
+      All real-world tasks run on a bimanual ALOHA robot with one overhead RGB-D camera.
+
+      #### Comparative tasks
+
+      **Object Handoff.** The right arm hands a tape roll to the left arm.
+
+      **Screwdriver Packing.** The robot packs a screwdriver into its box and closes the lid.
+
+      **Cup-sleeve Insertion.** The two arms insert a paper cup fully into a cup sleeve.
+
+      <article class="media-card">
+        <div class="media-card__copy">
+          <h3>Initial Object Placements</h3>
+          <p>Colored regions mark where each object starts. ID tests use the same regions as the demonstrations, and OOD tests enlarge every region. For Screwdriver Packing, OOD also replaces the three demonstrated headings (−10°, 0°, 10°) with a continuous range. Leaky tests tilt the target objects against static supports.</p>
+        </div>
+        <figure>
+          <img src="paper-figures/real-world-exp-setting.png" style="max-width:500px" alt="Initial placements for cup-sleeve insertion, screwdriver packing, and object handoff under ID, OOD, and Leaky settings." loading="lazy" />
+        </figure>
+      </article>
+
+      #### Cup-Sponge-Screwdriver
+
+      This long-horizon task composes three skills: screwdriver packing, cup handoff, and cup wiping. Each skill is learned from 20 demonstrations.
+
+      <article class="media-card">
+        <div class="media-card__copy">
+          <h3>Training and Deployment</h3>
+          <p>Each skill is demonstrated separately, with its objects in a small region at a fixed orientation (a–c). At deployment, all three skills run in one scene, and the objects start anywhere in much larger regions (d). The screwdriver heading varies within (−90°, 90°), and the cup and sponge headings vary within (−45°, 45°).</p>
+        </div>
+        <figure>
+          <img src="paper-figures/tro-3skills-init-1col.png" style="max-width:560px" alt="Demonstration placements for three skills and deployment placements for their combined task." loading="lazy" />
+        </figure>
+      </article>
+
+      </details>
+
   - title: 'Skill Reuse and Composition'
     id: section-4
     text: |
-      DR-LfD composes three skills (screwdriver packing, cup handoff, and cup wiping), each learned from 20 demos, to reach a long-horizon goal.
+      **Cup-Sponge-Screwdriver.** DR-LfD composes three separately learned skills into a 19-step plan with three distinct bimanual operations. DP and π₀.₅ are trained on the same 60 demonstrations. π₀.₅ is competitive with DR-LfD under ID placements, while DR-LfD outperforms both DP and π₀.₅ under OOD placements. Success rates over 20 real-world trials:
+
+      | Initial placements | DP | π₀.₅ | DR-LfD |
+      |---|---|---|---|
+      | ID | 20% | 70% | 55% |
+      | OOD | 0% | 10% | 50% |
+
+      **Skill improvement under clutter.** With four distractors on the table, the success rate of DR-LfD drops from 50% to 0%. Because skills are learned separately, retraining each skill with five cluttered-background demonstrations restores the success rate to 55%, without recollecting any long-horizon demonstration.
+
+      <figure>
+        <img src="paper-figures/stress-tests.png" alt="Real-world stress tests from the paper: clutter scene, task success and completed steps with zero to four distractors, and comparisons on novel object instances." loading="lazy" style="display:block;width:100%;max-width:990px;height:auto;margin:0 auto;" />
+        <figcaption>Real-world stress tests with 20 rollouts per setting. (b) Cup-Sponge-Screwdriver with zero to four distractors. 4+R denotes four distractors after each skill is retrained. Bars show the success rate, and diamonds show the average number of completed steps (ANCS) as a percentage of all task steps. (c) Standard and novel object instances. (d) Success rates with standard (hollow markers) and novel (filled markers) instances.</figcaption>
+      </figure>
 
 
       <article class="media-card">
         <div class="media-card__copy">
           <h3>Skill composition and reuse</h3>
-          <p>Compose skills to solve long-horizon, human-specified tasks.</p>
+          <p>TAMP composes three separately learned skills into one long-horizon task: screwdriver packing, cup handoff, and cup wiping.</p>
         </div>
         <figure>
           <video width="1280" height="720" data-src="ppt-pics/3skills_web.mp4" data-poster="posters/ppt-pics/3skills_web.jpg" controls controlsList="nodownload" muted loop playsinline preload="none"></video>
@@ -197,55 +251,22 @@ body:
           <p>A VLM identifies robot–object and object–object contact changes. These changes define atomic skills and their start and end conditions.</p>
         </div>
         <figure>
-          <img src="paper-figures/vlm-grounding.png" alt="VLM-based contact relationship grounding for demonstration decomposition" loading="lazy" />
+          <img src="paper-figures/vlm-grounding.png" style="max-width:670px" alt="VLM-based contact relationship grounding for demonstration decomposition" loading="lazy" />
         </figure>
       </article>
 
-      <article class="media-card">
+      <article class="media-card media-card--stacked">
         <div class="media-card__copy">
           <h3>3. Learn each skill</h3>
           <p>Train object-centric primitives for pick-and-place actions and visuomotor policies for contact-rich actions. Use standard TAMP motion skills for free-space moves.</p>
         </div>
         <figure>
-          <img src="paper-figures/skillequivNet.png" alt="SO(3)-equivariant object-centric skill network" loading="lazy" />
+          <img src="paper-figures/skillequivNet.png" style="max-width:1000px" alt="SO(3)-equivariant object-centric skill network" loading="lazy" />
         </figure>
       </article>
 
       4. **Plan a new task** — TAMP selects and orders the learned skills, adding regrasping or obstacle removal to satisfy safety and reachability constraints.
       5. **Execute and verify** — The robot perceives, plans, executes, and verifies each step. Failed steps trigger local replanning.
-
-      </details>
-
-      <details>
-      <summary>System capabilities</summary>
-
-
-      <div class="system-advantages" aria-label="DR-LfD system advantages">
-        <a class="system-advantage-link" href="#section-4">
-          <article class="uk-card uk-card-default uk-card-body system-advantage">
-            <h4>Heterogeneous Skill Composition</h4>
-            <p>The planner sequences visuomotor policies, object-centric primitives, and predefined motion skills. Contact conditions define the transitions between skills.</p>
-          </article>
-        </a>
-        <a class="system-advantage-link" href="#section-3">
-          <article class="uk-card uk-card-default uk-card-body system-advantage">
-            <h4>Pose-Free Spatial Generalization</h4>
-            <p>Object-centric primitives use SE(3)-equivariant learning to adapt to new object placements and orientations without explicit 6-DoF object-pose estimation.</p>
-          </article>
-        </a>
-        <a class="system-advantage-link" href="#section-2">
-          <article class="uk-card uk-card-default uk-card-body system-advantage">
-            <h4>Physical Constraint Handling</h4>
-            <p>DR-LfD exposes reachability and obstacle constraints of each policy to the planner, which checks feasibility and inserts corrective actions.</p>
-          </article>
-        </a>
-        <a class="system-advantage-link" href="#section-5">
-          <article class="uk-card uk-card-default uk-card-body system-advantage">
-            <h4>Dual-Arm Online Replanning</h4>
-            <p>The system tracks contacts across both arms and verifies each skill outcome. A mismatch between observed and expected states triggers local replanning.</p>
-          </article>
-        </a>
-      </div>
 
       </details>
 
@@ -263,9 +284,9 @@ body:
         </figure>
       </div>
 
-      SE(3)-equivariant diffusion primitives trained on ≈20 demonstrations adapt to new object positions and orientations.
+      SE(3)-equivariant diffusion primitives trained on ≈20 demonstrations adapt to new object positions and orientations without explicit 6-DoF object-pose estimation.
 
-      **Object Handoff** — transferring a tape roll from right arm to left arm across varied initial placements (OOD condition, 4× speed).
+      **Object Handoff** — OOD placements (4× speed).
       <div uk-slider>
         <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-3@m uk-grid">
           <div>
@@ -327,7 +348,7 @@ body:
         </div>
       </div>
 
-      **Screwdriver Packing** — grasping and packing a screwdriver across varied initial placements (OOD condition, 4× speed).
+      **Screwdriver Packing** — OOD placements (4× speed).
       <div uk-slider>
         <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-3@m uk-grid">
           <div>
@@ -389,7 +410,7 @@ body:
         </div>
       </div>
 
-      **Screwdriver Packing on Franka** — same task on a single-arm platform with randomized initial placement via tossing (4× speed).
+      **Screwdriver Packing on Franka** — single-arm platform, placements randomized by tossing (4× speed).
       <div uk-slider>
         <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-2@m uk-grid">
           <div>
@@ -467,7 +488,8 @@ body:
       <article class="media-card">
         <div class="media-card__copy">
           <h3>Randomization via Tossing</h3>
-          <p>The equivariant primitive adapts to new object positions and orientations introduced by tossing.</p>
+          <p>Tossing leaves the screwdriver at a random position and orientation, and the equivariant primitive adapts to each new placement.</p>
+          <p> One-shot video, the robot adapts to any displacements </p>
         </div>
         <figure>
           <video width="1280" height="720" data-src="ppt-pics/throw_screw_web.mp4" data-poster="posters/ppt-pics/throw_screw_web.jpg" controls controlsList="nodownload" muted loop playsinline preload="none"></video>
@@ -480,10 +502,10 @@ body:
       <article class="media-card">
         <div class="media-card__copy">
           <h3>Reachability and obstacle avoidance</h3>
-          <p>A visuomotor policy cannot tell whether an object is within reach or whether its motion will hit an obstacle. DR-LfD exposes both constraints to TAMP, which checks them and inserts corrective actions. In simulation, DR-LfD succeeds in 55% of unreachable and 70% of obstructed setups, while ACT and DP fail in all of them.</p>
+          <p>DR-LfD exposes the reachability and collision constraints of each visuomotor policy to TAMP, which inserts corrective actions when a constraint is violated.</p>
         </div>
         <figure>
-          <img src="paper-figures/tro-unsafe-unreachable.png" alt="Examples of unreachable and obstructed setups handled through planning" loading="lazy" />
+          <img src="paper-figures/real-unreach-unsafe.webp" alt="Real-world reachability map with the cup sleeve out of reach, and collision map with a plunger blocking cup wiping, each followed by the planned recovery steps." loading="lazy" />
         </figure>
       </article>
 
@@ -605,7 +627,14 @@ body:
   - title: 'Reactive Recovery'
     id: section-5
     text: |
-      Contact checks at the end of each skill detect disturbances and trigger local replanning.
+      After each learned skill, a wrist-camera contact detector checks whether the expected contact is established. If it is not, DR-LfD re-perceives the scene and replans locally.
+
+      <figure>
+        <img src="paper-figures/online-planning-execution.png" alt="Paper Fig. 3(d): execution feeds contact observations back to scene perception and detailed TAMP for local replanning." loading="lazy" style="display:block;width:100%;max-width:650px;height:auto;margin:0 auto;" />
+        <figcaption>Online planning and execution.</figcaption>
+      </figure>
+
+      When an operator moves the target object away before the grasp, DR-LfD recovers and succeeds in 9/10 Object Handoff, 5/10 Screwdriver Packing, and 10/10 Cup Wiping trials.
 
       <div class="uk-grid-small uk-child-width-1-2@m" uk-grid>
         <div>
@@ -695,7 +724,7 @@ body:
 
       #### Spatial Generalization — Real World (n = 20 per setup)
 
-      Three tasks on ALOHA hardware. **ID**: in-distribution placements. **OOD**: position/rotation shift. **Leaky**: target object rotated and leaning against a distractor.
+      Each task uses 20 demonstrations. DP and DR-LfD are trained from scratch on these demonstrations, and π₀.₅ is fine-tuned on the same data. ID, OOD, and Leaky placements are defined in [Real-world Task Settings](#section-8).
 
       | Task | Setup | DP | π₀.₅ | **DR-LfD** |
       |---|---|---|---|---|
@@ -709,14 +738,24 @@ body:
       | | OOD | 35% | 25% | **75%** |
       | | Leaky | 35% | 35% | **40%** |
 
-      DR-LfD achieves the highest success rate on all three OOD tasks. In the Leaky setting, π₀.₅ leads on Screwdriver Packing (75% vs 65%). Cup-sleeve Insertion remains difficult for all methods; fine insertion and noisy single-view depth sensing contribute to failures.
+      In the Leaky setting, π₀.₅ leads on Screwdriver Packing. Cup-sleeve Insertion remains difficult for all methods; fine insertion and noisy single-view depth sensing contribute to failures.
 
       </details>
 
   - title: 'Simulation Benchmarks (LIBERO & DexMimicGen)'
     id: section-7
     text: |
-      On LIBERO, DR-LfD reaches 98% on both the Spatial and Object suites, versus 84% and 78% for Diffusion Policy trained with 50 demos per task. On DexMimicGen bimanual threading and assembly, DR-LfD trained on 100 demos outperforms DP and SDP trained on 1,000.
+      **LIBERO.** DR-LfD reaches 98% on both the Spatial and Object suites, versus 84% and 78% for Diffusion Policy trained with 50 demos per task. On Long8, adding online perception raises the success rate of DR-LfD from 30% to 90% over 10 rollouts.
+
+      **Data efficiency on DexMimicGen.** On the contact-rich Two-Arm Threading and Two-Arm Assembly tasks, we train DR-LfD, Diffusion Policy (DP), and SE(3)-equivariant SDP with 100 to 1000 demonstrations per task.
+
+      <figure>
+        <img src="paper-figures/dexmimicgen_scaling.png" alt="Success rates versus 100, 200, 500, and 1000 training demonstrations on Two-Arm Threading and Two-Arm Assembly, comparing DR-LfD, DP, and SDP." loading="lazy" style="display:block;width:100%;max-width:600px;height:auto;margin:0 auto;" />
+        <figcaption>Success rates on two DexMimicGen tasks with different numbers of demonstrations, evaluated over 50 trials per setting. Error bars show 95% Wilson confidence intervals.</figcaption>
+      </figure>
+
+      DR-LfD trained on just 100 demonstrations outperforms DP and SDP trained with 1000 demonstrations.
+
       <div uk-slider>
         <div class="uk-slider-items uk-grid-small uk-child-width-1-1 uk-child-width-1-3@m uk-grid">
           <div>
@@ -816,51 +855,3 @@ body:
           <a class="uk-icon-button uk-margin-small-left" href uk-slidenav-next uk-slider-item="next"></a>
         </div>
       </div>
-
-  - title: 'Real-world Task Settings'
-    id: section-8
-    text: |
-      <details>
-      <summary><strong>Hardware, task procedures, placements, and success criteria</strong></summary>
-
-      #### Hardware setup
-
-      Real-world comparisons use ALOHA with an overhead Intel RealSense D435i RGB-D camera for 3D perception.
-
-      #### Comparative tasks
-
-      **Cup-sleeve Insertion.** The left arm grasps the sleeve and the right arm grasps the cup. The arms align the objects and insert the cup fully into the sleeve to complete the task.
-
-      **Screwdriver Packing.** The left gripper places the screwdriver into its target pose inside the box. The right gripper closes the lid, and both grippers press it shut. Success requires the screwdriver inside the box and the lid fully closed.
-
-      **Object Handoff.** The right gripper picks up the tape and passes it to the left gripper, which then places it down. Success is recorded when the left gripper firmly grasps the tape.
-
-      <article class="media-card">
-        <div class="media-card__copy">
-          <h3>Initial Object Placements</h3>
-          <p>Top: the sleeve starts in the left blue region and the cup in the right green region; both regions are enlarged in OOD. Middle: the screwdriver center starts in the purple region with heading selected from {−10°, 0°, 10°}; OOD enlarges the region to cover most of the left half of the table and randomizes the heading continuously. Bottom: the tape starts on the right side of the table; OOD enlarges its placement region.</p>
-        </div>
-        <figure>
-          <img src="paper-figures/real-world-exp-setting.png" alt="Initial placements for cup-sleeve insertion, screwdriver packing, and object handoff under ID, OOD, and Leaky settings." loading="lazy" />
-        </figure>
-      </article>
-
-      **Leaky placements.** Support objects tilt the targets: the cup and sleeve along the pitch axis, the screwdriver by approximately 5°, and the tape against a mouse at approximately 30° pitch. These supports are modeled as static background and excluded from the obstacle check.
-
-      #### Cup-Sponge-Screwdriver
-
-      Four demonstration sets train the component skills: screwdriver packing (a₁), cup handoff (a₂), and cup wiping (a₃), each with all objects in the scene; and a second screwdriver-packing set with the sponge and cup removed.
-
-      <article class="media-card">
-        <div class="media-card__copy">
-          <h3>Training and Deployment</h3>
-          <p>Panels (a)–(c): during data collection, task objects occupy small regions with fixed orientations—the screwdriver for a₁, the cup for a₂, and the cup and sponge for a₃. Panel (d): deployment composes the three skills in one scene. The screwdriver starts randomly within the large purple region, with heading sampled from (−90°, 90°). The cup and sponge start randomly within the large yellow region, with headings sampled from (−45°, 45°).</p>
-        </div>
-        <figure>
-          <img src="paper-figures/tro-3skills-init-1col.png" alt="Demonstration placements for three skills and deployment placements for their combined task." loading="lazy" />
-        </figure>
-      </article>
-
-      **Success criteria.** Success requires all three subtasks: the right gripper passes the cup to the left; the right-held sponge contacts the left-held cup; and the screwdriver is inside the closed box. All objects rest on the table at completion.
-
-      </details>

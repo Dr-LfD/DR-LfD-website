@@ -12,6 +12,10 @@
 $global-font-family: 'Poppins', 'Open Sans';
 $base-heading-font-family: 'Source Sans 3', 'Open Sans';
 
+// Type scale: body text in cards matches page body; captions and labels share one small size.
+$text-body: 16px;
+$text-small: 14px;
+
 // code block settings
 $base-pre-background: $clr-grey-100;
 $base-pre-border: 0 solid $clr-grey-200;
@@ -155,7 +159,7 @@ html {
   color: #1d416d;
   display: flex;
   flex-direction: column;
-  font-size: 0.8rem;
+  font-size: $text-small;
   font-weight: 600;
   min-height: 5.5rem;
   justify-content: center;
@@ -182,47 +186,6 @@ html {
   justify-content: center;
   margin-bottom: 0.4rem;
   width: 1.25rem;
-}
-
-.system-advantages {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin: 1.5rem 0 2rem;
-}
-
-.system-advantage {
-  background: #f4f8fd;
-  border: 1px solid #d7e5f6;
-  min-height: 10.5rem;
-  padding: 1.25rem;
-  transition:
-    border-color 150ms ease,
-    transform 150ms ease;
-}
-
-.system-advantage h4 {
-  color: #1d416d;
-  font-size: 1rem;
-  margin: 0 0 0.6rem;
-}
-
-.system-advantage-link {
-  color: inherit;
-  display: block;
-  text-decoration: none;
-}
-
-.system-advantage-link:hover .system-advantage,
-.system-advantage-link:focus-visible .system-advantage {
-  border-color: #4a86e8;
-  transform: translateY(-2px);
-}
-
-.system-advantage p {
-  font-size: 0.9rem;
-  line-height: 1.55;
-  margin: 0;
 }
 
 .project-section img {
@@ -257,17 +220,12 @@ html {
   .method-pipeline div:not(:last-child)::after {
     content: '';
   }
-
-  .system-advantages {
-    grid-template-columns: 1fr;
-  }
-
-  .system-advantage {
-    min-height: 0;
-  }
 }
 
 // Result-led project presentation.
+.project-section figcaption {
+  font-size: $text-small;
+}
 body {
   background: #fafbf9;
   color: #293b39;
@@ -287,7 +245,7 @@ body {
   }
   .uk-button {
     color: #174f40;
-    font-size: 12px;
+    font-size: $text-small;
     svg {
       width: 18px;
       height: 18px;
@@ -358,7 +316,7 @@ body {
   }
 }
 .metric-label {
-  font-size: 14px;
+  font-size: $text-small;
   font-weight: 600;
 }
 .media-card {
@@ -385,8 +343,8 @@ body {
     letter-spacing: -0.025em;
   }
   p:not(.eyebrow) {
-    font-size: 13px;
-    line-height: 1.8;
+    font-size: $text-body;
+    line-height: 1.7;
   }
   figure {
     margin: 0;
@@ -402,13 +360,13 @@ body {
     display: flex;
     justify-content: space-between;
     padding: 12px 16px;
-    font-size: 10px;
+    font-size: $text-small;
     gap: 12px;
   }
 }
 .text-link {
   color: #d6eccb;
-  font-size: 12px;
+  font-size: $text-small;
   font-weight: 600;
   &:hover {
     color: #fff;
@@ -443,7 +401,7 @@ body {
     cursor: pointer;
     padding: 18px 0;
     color: #315d4d;
-    font-size: 13px;
+    font-size: $text-body;
     font-weight: 600;
   }
   details[open] {
@@ -466,7 +424,7 @@ body {
 }
 .results-intro {
   color: #6c7770;
-  font-size: 13px;
+  font-size: $text-body;
 }
 .comparison-grid {
   display: grid;
@@ -496,7 +454,7 @@ body {
     }
   }
   .comparison-gain {
-    font-size: 10px;
+    font-size: $text-small;
     color: #39715e;
     margin: 0 0 24px;
   }
@@ -507,7 +465,7 @@ body {
   align-items: center;
   gap: 8px;
   margin: 12px 0;
-  font-size: 11px;
+  font-size: $text-small;
   strong {
     text-align: right;
     font-variant-numeric: tabular-nums;
@@ -550,7 +508,7 @@ summary:focus-visible {
     }
   }
   .metric-label {
-    font-size: 11px;
+    font-size: 13px;
   }
   .media-card {
     grid-template-columns: 1fr;
@@ -610,12 +568,17 @@ summary:focus-visible {
     display: block;
     width: 100%;
     height: auto;
-    margin: 0;
+    margin: 0 auto;
     background: #fff;
   }
   video {
     border-radius: 0;
   }
+}
+
+// Figures too wide for the side column take the full row under the copy.
+.media-card--stacked {
+  grid-template-columns: 1fr;
 }
 
 .video-comparison {
@@ -642,7 +605,7 @@ summary:focus-visible {
   }
   p {
     margin: 0;
-    font-size: 13px;
+    font-size: $text-small;
   }
   video {
     display: block;

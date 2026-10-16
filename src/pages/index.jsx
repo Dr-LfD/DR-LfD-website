@@ -14,7 +14,7 @@ import '@/js/styles.js';
 
 class Template extends React.Component {
   render() {
-    // Supplementary video renders as its own tail section, right before
+    // Video introduction renders as its own tail section, right before
     // the results section (id section-6) rather than up top, so split the body array there.
     const videoAnchor = data.body.findIndex((b) => b.id === 'section-6');
     const bodyBeforeVideo =

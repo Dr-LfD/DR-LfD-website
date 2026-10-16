@@ -12,7 +12,7 @@ export default class Video extends React.Component {
     return (
       <div className="uk-section">
         <h2 className="uk-text-bold uk-heading-line uk-text-center" id="video">
-          <span>Supplementary Video</span>
+          <span>Video Introduction</span>
         </h2>
         <video
           className="uk-align-center uk-width-1-1"
@@ -23,7 +23,6 @@ export default class Video extends React.Component {
           preload="none"
           controls
           controlsList="nodownload"
-          muted
           playsInline
           style={{ cursor: 'pointer', display: 'block' }}
           onClick={(e) => {
