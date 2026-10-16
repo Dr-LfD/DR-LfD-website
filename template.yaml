@@ -11,7 +11,7 @@ resources:
   video: 'ppt-pics/sup-vid-narrated.mp4'
 description: 'DR-LfD decomposes demonstrations into reusable skills and composes them with task and motion planning. Under unseen object placements in three real-world tasks, it succeeds in 83% of trials, compared with 18% for π₀.₅.'
 
-image: https://dr-lfd.github.io/DR-LfD-website/paper-figures/tro-teaser.png
+image: https://dr-lfd.github.io/DR-LfD-website/paper-figures/og-card.png
 url: https://dr-lfd.github.io/DR-LfD-website
 speakerdeck: # speakerdeck slide ID
 navigation:
@@ -48,9 +48,9 @@ body:
     id: highlights
     text: |
       <div class="headline-metrics" aria-label="Key results">
-        <a href="#section-4" class="headline-metric">
-          <strong>Skill reuse</strong>
-          <span class="metric-label">Trained skills recomposed, 20 demos each</span>
+        <a href="#section-7" class="headline-metric">
+          <strong>Data efficiency</strong>
+          <span class="metric-label">100 demos > DP with 1000 · two DexMimicGen tasks</span>
         </a>
         <a href="#section-6" class="headline-metric">
           <strong>Spatial generalization</strong>
