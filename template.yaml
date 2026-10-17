@@ -107,20 +107,7 @@ body:
   - title: 'Skill Reuse and Composition'
     id: section-4
     text: |
-      **Cup-Sponge-Screwdriver.** DR-LfD composes three separately learned skills into a 19-step plan with three distinct bimanual operations. DP and π₀.₅ are trained on the same 60 demonstrations. π₀.₅ is competitive with DR-LfD under ID placements, while DR-LfD outperforms both DP and π₀.₅ under OOD placements. Success rates over 20 real-world trials:
-
-      | Initial placements | DP | π₀.₅ | DR-LfD |
-      |---|---|---|---|
-      | ID | 20% | 70% | 55% |
-      | OOD | 0% | 10% | 50% |
-
-      **Skill improvement under clutter.** With four distractors on the table, the success rate of DR-LfD drops from 50% to 0%. Because skills are learned separately, retraining each skill with five cluttered-background demonstrations restores the success rate to 55%, without recollecting any long-horizon demonstration.
-
-      <figure>
-        <img src="paper-figures/stress-tests.png" alt="Real-world stress tests from the paper: clutter scene, task success and completed steps with zero to four distractors, and comparisons on novel object instances." loading="lazy" style="display:block;width:100%;max-width:990px;height:auto;margin:0 auto;" />
-        <figcaption>Real-world stress tests with 20 rollouts per setting. (b) Cup-Sponge-Screwdriver with zero to four distractors. 4+R denotes four distractors after each skill is retrained. Bars show the success rate, and diamonds show the average number of completed steps (ANCS) as a percentage of all task steps. (c) Standard and novel object instances. (d) Success rates with standard (hollow markers) and novel (filled markers) instances.</figcaption>
-      </figure>
-
+      **Cup-Sponge-Screwdriver.** DR-LfD composes three separately learned skills into a 19-step plan with three distinct bimanual operations. Trained on the same 60 demonstrations, DP and π₀.₅ succeed in 0% and 10% of 20 trials under OOD placements, while DR-LfD succeeds in 50%.
 
       <article class="media-card">
         <div class="media-card__copy">
@@ -219,6 +206,13 @@ body:
           <a class="uk-icon-button uk-margin-small-left" href uk-slidenav-next uk-slider-item="next"></a>
         </div>
       </div>
+
+      **Skill improvement under clutter.** With four distractors on the table, the success rate of DR-LfD drops from 50% to 0%. Because skills are learned separately, retraining each skill with five cluttered-background demonstrations restores the success rate to 55% (4+R in the figure), without recollecting any long-horizon demonstration.
+
+      <figure>
+        <img src="paper-figures/stress-tests.png" alt="Real-world stress tests from the paper: clutter scene, task success and completed steps with zero to four distractors, and comparisons on novel object instances." loading="lazy" style="display:block;width:100%;max-width:990px;height:auto;margin:0 auto;" />
+        <figcaption>Real-world stress tests under clutter (a, b) and novel object instances (c, d).</figcaption>
+      </figure>
 
   - title: 'Key Contributions'
     id: section-0
