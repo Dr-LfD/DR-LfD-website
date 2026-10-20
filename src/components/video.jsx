@@ -1,40 +1,65 @@
 import React from 'react';
-import { render } from 'react-dom';
 
-export default class Video extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+export default function Video({ videos }) {
+  const [activeIndex, setActiveIndex] = React.useState(0);
+  const [autoPlay, setAutoPlay] = React.useState(false);
+  const [hasStarted, setHasStarted] = React.useState(false);
+  const player = React.useRef(null);
+  if (!videos || !videos.length) return null;
+  const activeVideo = videos[activeIndex];
 
-  render() {
-    if (!this.props.video) return null;
-    const poster = 'posters/' + this.props.video.replace(/\.mp4$/, '.jpg');
-    return (
-      <div className="uk-section">
-        <h2 className="uk-text-bold uk-heading-line uk-text-center" id="video">
-          <span>Video Introduction</span>
-        </h2>
+  return (
+    <section className="project-section video-introduction" id="video">
+      <h2 className="uk-text-bold uk-heading-line">
+        <span>Video Introduction</span>
+      </h2>
+      <div className="video-selector" role="group" aria-label="Video version">
+        {videos.map((video, index) => (
+          <button
+            type="button"
+            key={video.src}
+            aria-pressed={index === activeIndex}
+            aria-controls="introduction-player"
+            onClick={() => {
+              if (index === activeIndex) return;
+              player.current.pause();
+              setHasStarted(false);
+              setAutoPlay(true);
+              setActiveIndex(index);
+            }}
+          >
+            <span>{video.label}</span>
+          </button>
+        ))}
+      </div>
+      <div className="video-introduction__player">
         <video
-          className="uk-align-center uk-width-1-1"
-          data-src={this.props.video}
-          data-poster={poster}
+          id="introduction-player"
+          key={activeVideo.src}
+          ref={player}
+          src={activeVideo.src}
+          poster={activeVideo.poster}
+          aria-label={activeVideo.label}
           width={1280}
           height={720}
           preload="none"
           controls
           controlsList="nodownload"
           playsInline
-          style={{ cursor: 'pointer', display: 'block' }}
-          onClick={(e) => {
-            const v = e.currentTarget;
-            if (v.dataset.src) {
-              v.src = v.dataset.src;
-              v.removeAttribute('data-src');
-            }
-            v.paused ? v.play() : v.pause();
-          }}
+          autoPlay={autoPlay}
+          onPlay={() => setHasStarted(true)}
         />
+        {!hasStarted && (
+          <button
+            className="video-introduction__play"
+            type="button"
+            aria-label={`Play ${activeVideo.label}`}
+            onClick={() => player.current.play()}
+          >
+            <span aria-hidden="true">▶</span>
+          </button>
+        )}
       </div>
-    );
-  }
+    </section>
+  );
 }

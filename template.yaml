@@ -8,7 +8,14 @@ resources:
   # paper: https://drive.google.com/file/d/1nnW882ct4Hky8AVqaqiqV_urIbZgC_WV/view?usp=sharing
   # arxiv: https://arxiv.org
   code: https://github.com/Dr-LfD/Dr-LfD-dualArm
-  video: 'ppt-pics/sup-vid-narrated.mp4'
+  video: '#video'
+videoIntroduction:
+  - label: Quick overview
+    src: ppt-pics/dr-lfd-promo.mp4
+    poster: posters/ppt-pics/dr-lfd-promo.jpg
+  - label: Full walkthrough · Narrated
+    src: ppt-pics/sup-vid-narrated.mp4
+    poster: posters/ppt-pics/sup-vid-narrated.jpg
 description: 'DR-LfD decomposes demonstrations into reusable skills and composes them with task and motion planning. Under unseen object placements in three real-world tasks, it succeeds in 83% of trials, compared with 18% for π₀.₅.'
 
 image: https://dr-lfd.github.io/DR-LfD-website/paper-figures/og-card.png

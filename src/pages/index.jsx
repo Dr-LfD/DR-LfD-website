@@ -14,13 +14,6 @@ import '@/js/styles.js';
 
 class Template extends React.Component {
   render() {
-    // Video introduction renders as its own tail section, right before
-    // the results section (id section-6) rather than up top, so split the body array there.
-    const videoAnchor = data.body.findIndex((b) => b.id === 'section-6');
-    const bodyBeforeVideo =
-      videoAnchor === -1 ? data.body : data.body.slice(0, videoAnchor);
-    const bodyAfterVideo =
-      videoAnchor === -1 ? [] : data.body.slice(videoAnchor);
     return (
       <div>
         <Helmet
@@ -125,6 +118,7 @@ class Template extends React.Component {
           theme={data.theme}
         />
         <div className="uk-container uk-container-small">
+          <Video videos={data.videoIntroduction} />
           <Overview
             abstract={data.abstract}
             teaser={data.teaser}
@@ -134,9 +128,7 @@ class Template extends React.Component {
         <Navigation items={data.navigation} />
         <div className="uk-container uk-container-small">
           <SpeakerDeck dataId={data.speakerdeck} />
-          <Body body={bodyBeforeVideo} />
-          <Video video={data.resources.video} />
-          <Body body={bodyAfterVideo} />
+          <Body body={data.body} />
         </div>
       </div>
     );

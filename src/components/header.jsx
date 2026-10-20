@@ -56,7 +56,9 @@ class ResourceBtn extends React.Component {
         <a
           className={aClass}
           href={comingSoon ? undefined : this.props.url}
-          target={comingSoon ? undefined : '_blank'}
+          target={
+            comingSoon || this.props.url.startsWith('#') ? undefined : '_blank'
+          }
         >
           <FaIcon size="2em" />
           <span className={sClass}>{iTitle}</span>
