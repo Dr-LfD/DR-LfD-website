@@ -1,4 +1,5 @@
 import data from '../../template.yaml';
+import '@/scss/theme.scss';
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
 
@@ -14,7 +15,7 @@ const loadTheme = async (theme) => {
         await import('@/scss/classic-theme.scss');
         break;
       default:
-        await import('@/scss/theme.scss');
+        break;
     }
   } catch (err) {
     console.error('Failed to load theme:', err);

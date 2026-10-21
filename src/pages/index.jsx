@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { render, hydrate } from 'react-dom';
 import { Helmet } from 'react-helmet';
 
 import Header from '@/components/header';
@@ -107,32 +107,39 @@ class Template extends React.Component {
             },
           ]}
         />
-        <Header
-          title={data.title}
-          // journal={data.journal}
-          // conference={data.conference}
-          // authors={data.authors}
-          // affiliations={data.affiliations}
-          // meta={data.meta}
-          resources={data.resources}
-          theme={data.theme}
-        />
-        <div className="uk-container uk-container-small">
-          <Video videos={data.videoIntroduction} />
-          <Overview
-            abstract={data.abstract}
-            teaser={data.teaser}
-            description={data.description}
-          />
-        </div>
         <Navigation items={data.navigation} />
-        <div className="uk-container uk-container-small">
-          <SpeakerDeck dataId={data.speakerdeck} />
-          <Body body={data.body} />
-        </div>
+        <main className="page-content">
+          <Header
+            description={data.description}
+            title={data.title}
+            // journal={data.journal}
+            // conference={data.conference}
+            // authors={data.authors}
+            // affiliations={data.affiliations}
+            // meta={data.meta}
+            resources={data.resources}
+            theme={data.theme}
+          />
+          <div className="uk-container uk-container-small">
+            <Overview
+              highlights={data.body.find(
+                (section) => section.id === 'highlights'
+              )}
+              teaser={data.teaser}
+            />
+          </div>
+          <div className="uk-container uk-container-small">
+            <Video videos={data.videoIntroduction} />
+            <SpeakerDeck dataId={data.speakerdeck} />
+            <Body
+              body={data.body.filter((section) => section.id !== 'highlights')}
+            />
+          </div>
+        </main>
       </div>
     );
   }
 }
 
-render(<Template />, document.getElementById('root'));
+const root = document.getElementById('root');
+(root.hasChildNodes() ? hydrate : render)(<Template />, root);

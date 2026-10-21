@@ -26,7 +26,10 @@
       "--no-sandbox"
     ],
     "concurrency": 1,
-    "inlineCss": false
+    "inlineCss": false,
+    "publicPath": "/DR-LfD-website",
+    "crawl": false,
+    "skipThirdPartyRequests": true
   },
   "devDependencies": {
     "@rollup/plugin-yaml": "^4.1.2",

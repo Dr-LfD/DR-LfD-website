@@ -76,10 +76,16 @@ export default class Header extends React.Component {
   render() {
     return (
       <>
-        <div className="uk-cover-container project-hero">
+        <div className="uk-cover-container project-hero" id="overview">
           <div className="uk-container uk-container-small uk-section">
             <div className="uk-text-center uk-text-bold">
-              <h1 className="hero-title">{this.props.title}</h1>
+              <p className="eyebrow">DR-LfD</p>
+              <h1 className="hero-title">
+                {this.props.title.split(': ')[0]}
+                <span className="hero-subtitle">
+                  {this.props.title.split(': ').slice(1).join(': ')}
+                </span>
+              </h1>
               {this.props.journal && (
                 <span className="uk-label uk-label-primary uk-text-center uk-margin-small-bottom">
                   {this.props.journal}
@@ -93,6 +99,7 @@ export default class Header extends React.Component {
                 meta={this.props.meta}
               />
             )}
+            <p className="hero-description">{this.props.description}</p>
             {this.props.resources && (
               <div className="uk-flex uk-flex-center uk-margin-top">
                 {Object.keys(this.props.resources).map((key, rid) => (

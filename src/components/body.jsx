@@ -116,6 +116,7 @@ export default class Body extends React.Component {
   }
 
   componentDidMount() {
+    if (navigator.userAgent === 'ReactSnap') return;
     setTimeout(() => {
       this.setVideoPlaybackRates();
       this.setupVideoObserver();
@@ -123,6 +124,7 @@ export default class Body extends React.Component {
   }
 
   componentDidUpdate() {
+    if (navigator.userAgent === 'ReactSnap') return;
     setTimeout(() => {
       this.setVideoPlaybackRates();
       this.setupVideoObserver();
